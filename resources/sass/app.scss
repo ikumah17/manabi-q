@@ -1,1 +1,6 @@
-@use "bootstrap/scss/bootstrap";
+// 日本語のシステムフォント（Web フォントは読み込まない）
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", Meiryo, "Noto Sans JP", sans-serif;
+
+@use "bootstrap/scss/bootstrap" with (
+    $font-family-sans-serif: $font-family-sans-serif
+);
