@@ -87,4 +87,14 @@ class Answer extends Model
     {
         return $this->status === PostStatus::Published;
     }
+
+    /**
+     * ランキング・スタンプ獲得で数える回答：回答と質問の両方が公開中のもの
+     */
+    #[Scope]
+    protected function countable(Builder $query): void
+    {
+        $query->where('answers.status', PostStatus::Published->value)
+            ->whereHas('question', fn (Builder $question) => $question->where('status', PostStatus::Published->value));
+    }
 }

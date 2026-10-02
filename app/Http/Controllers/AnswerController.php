@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Question;
 use App\Models\Stamp;
+use App\Services\Ranking\RankingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -15,14 +16,14 @@ use Illuminate\View\View;
  */
 class AnswerController extends Controller
 {
-    public function create(Request $request, Question $question): View
+    public function create(Request $request, Question $question, RankingService $ranking): View
     {
         Gate::authorize('answer', $question);
 
         return view('answers.create', [
             'question' => $question,
             'stamps' => Stamp::ordered()->get(),
-            'answerCount' => $request->user()->publishedAnswerCount(),
+            'answerCount' => $ranking->answerCount($request->user()),
         ]);
     }
 

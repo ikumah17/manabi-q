@@ -139,6 +139,19 @@ class AnswerPostTest extends TestCase
             ->assertSessionHasErrors('stamp_id');
     }
 
+    public function test_answers_on_hidden_questions_do_not_count_for_stamps(): void
+    {
+        $this->giveAnswers(9);
+        Answer::factory()->for($this->user)->for(Question::factory()->hidden())->count(3)->create();
+
+        $this->actingAs($this->user)->get(route('answers.create', $this->question))
+            ->assertSee('10回答達成（未獲得）');
+
+        $this->actingAs($this->user)
+            ->post(route('answers.store', $this->question), ['body' => '回答', 'stamp_id' => $this->stamp10->id])
+            ->assertSessionHasErrors(['stamp_id' => '獲得していないスタンプは選択できません']);
+    }
+
     public function test_unknown_stamp_is_rejected(): void
     {
         $this->actingAs($this->user)
