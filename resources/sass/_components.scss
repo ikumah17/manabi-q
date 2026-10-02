@@ -1,40 +1,90 @@
 // 一般画面・管理画面の共通部品
 
-// バッジ（カテゴリ・状態・種別）
+// バッジ（カテゴリ・状態・種別）：薄い背景＋濃い文字
 .mq-badge {
     display: inline-block;
     padding: .125rem .5rem;
-    border-radius: .25rem;
-    font-size: .75rem;
-    font-weight: 700;
+    border-radius: .375rem;
+    font-size: var(--mq-fs-meta);
+    font-weight: 600;
     line-height: 1.5;
     white-space: nowrap;
     vertical-align: middle;
 
-    &--primary { background: var(--mq-primary-bg); color: var(--mq-primary); }
+    &--primary { background: var(--mq-gray-bg); color: #636366; }     // カテゴリ・質問（5.37:1）
     &--danger { background: var(--mq-danger-bg); color: var(--mq-danger); }
     &--success { background: var(--mq-success-bg); color: var(--mq-success); }
     &--ai { background: var(--mq-ai-bg); color: var(--mq-ai); }
-    &--muted { background: var(--mq-gray-bg); color: var(--mq-muted); }
-    &--best { background: var(--mq-best); color: #fff; }
+    &--muted { background: var(--mq-gray-bg); color: var(--mq-muted); }   // 4.54:1
+    &--best { background: var(--mq-best-bg); color: var(--mq-best-text); }
 }
 
-// エラーメッセージ（設計書の「エラーメッセージ」欄：淡い赤の背景に赤文字）
+// エラーメッセージ（淡い赤の背景に濃い赤の文字）
 .mq-error {
     padding: .75rem 1rem;
-    border-radius: .5rem;
+    border-radius: var(--mq-radius-input);
     background: var(--mq-danger-bg);
     color: var(--mq-danger);
-    font-size: .9375rem;
+    font-size: var(--mq-fs-sub);
 }
 
-// 完了メッセージ（G6 ①：淡い緑の背景に緑の太字）
+// 完了メッセージ（淡い緑の背景に濃い緑の文字）
 .mq-flash {
     padding: .75rem 1rem;
-    border-radius: .5rem;
-    font-weight: 700;
+    border-radius: var(--mq-radius-input);
+    font-size: var(--mq-fs-sub);
+    font-weight: 600;
 
     &--success { background: var(--mq-success-bg); color: var(--mq-success); }
+}
+
+// リンク：下線は文字から少し離す（色だけに頼らずリンクと分かるよう下線は残す）
+a {
+    text-underline-offset: .2em;
+}
+
+// ボタン：主ボタンは Bootstrap の btn-primary（#0066CC・白文字 5.57:1）
+// 副ボタン：白・薄い枠・濃い文字（プロフィール編集・再試行など）
+.btn-outline-primary {
+    --bs-btn-color: var(--mq-text);
+    --bs-btn-bg: #fff;
+    --bs-btn-border-color: var(--mq-border);
+    --bs-btn-hover-color: var(--mq-text);
+    --bs-btn-hover-bg: #f5f5f7;
+    --bs-btn-hover-border-color: #c7c7cc;
+    --bs-btn-active-color: var(--mq-text);
+    --bs-btn-active-bg: #ebebf0;
+    --bs-btn-active-border-color: #c7c7cc;
+    --bs-btn-disabled-color: var(--mq-muted);
+    --bs-btn-disabled-bg: #fff;
+    --bs-btn-disabled-border-color: var(--mq-hairline);
+}
+
+// 危険な操作の副ボタン（ログアウトなど）：白・薄い枠・濃い赤の文字
+.btn-outline-danger {
+    --bs-btn-color: var(--mq-danger);
+    --bs-btn-bg: #fff;
+    --bs-btn-border-color: var(--mq-border);
+    --bs-btn-hover-color: var(--mq-danger);
+    --bs-btn-hover-bg: var(--mq-danger-bg);
+    --bs-btn-hover-border-color: #f2b8b5;
+    --bs-btn-active-color: var(--mq-danger);
+    --bs-btn-active-bg: #ffdcd9;
+    --bs-btn-active-border-color: #f2b8b5;
+}
+
+// 控えめな主ボタン（薄い青の面に濃い青の文字 4.98:1。G4「検索」など）
+.btn-tinted {
+    --bs-btn-color: var(--mq-primary);
+    --bs-btn-bg: var(--mq-primary-bg);
+    --bs-btn-border-color: var(--mq-primary-bg);
+    --bs-btn-hover-color: var(--mq-primary);
+    --bs-btn-hover-bg: #dceafd;
+    --bs-btn-hover-border-color: #dceafd;
+    --bs-btn-active-color: var(--mq-primary);
+    --bs-btn-active-bg: #cfe2fc;
+    --bs-btn-active-border-color: #cfe2fc;
+    --bs-btn-focus-shadow-rgb: 0, 122, 255;
 }
 
 // ページネーション（‹ 1 2 3 ›）
@@ -42,30 +92,31 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: .5rem;
-    margin: 1rem 0;
+    gap: .375rem;
+    margin: 1.25rem 0;
 }
 
 .mq-page {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.25rem;
-    height: 2.25rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
     padding: 0 .5rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .375rem;
-    background: #fff;
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-sm);
+    background: var(--mq-surface);
     color: var(--mq-text);
-    font-size: .9375rem;
+    font-size: var(--mq-fs-body);
     text-decoration: none;
 
-    &:hover { border-color: var(--mq-primary); color: var(--mq-primary); }
+    &:hover { border-color: var(--mq-border); color: var(--mq-text); }
 
     &.is-active {
         border-color: var(--mq-primary);
         background: var(--mq-primary);
         color: #fff;
+        font-weight: 600;
     }
 
     &.is-disabled {

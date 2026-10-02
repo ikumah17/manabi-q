@@ -1,25 +1,69 @@
-// デザイン画像から採取した色・寸法
+// デザイントークン（白・薄いグレー・黒が基本。青は必要な場所だけ）
+// 文字に使う色は白背景で 4.5:1 以上（docs/spec-notes.md の「見た目の方針」）
 :root {
-    --mq-primary: #2e70d9;
-    --mq-primary-bg: #e8f0fc;
-    --mq-text: #212633;
-    --mq-muted: #6b7587;
-    --mq-border: #d9dee8;
-    --mq-bg: #f5f7fc;
-    --mq-gray-bg: #edf0f5;
-    --mq-danger: #db3333;
-    --mq-danger-bg: #fcebeb;
-    --mq-success: #29995c;
-    --mq-success-bg: #e5f7eb;
-    --mq-ai: #734cd9;
-    --mq-ai-bg: #f2edff;
-    --mq-best: #f5a624;
-    --mq-best-bg: #fff7e0;
-    --mq-best-text: #b2730d;
+    // 色：基本
+    --mq-bg: #f5f5f7;            // 画面の背景
+    --mq-surface: #fff;          // カード・入力欄
+    --mq-text: #1d1d1f;          // 本文（白で 16.8:1）
+    --mq-muted: #6e6e73;         // 補助テキスト（白で 5.07:1）
+    --mq-border: #d2d2d7;        // 入力欄・ボタンの枠
+    --mq-hairline: #e5e5ea;      // カード・区切り線（入力欄より薄く）
+    --mq-gray-bg: #f2f2f7;       // 薄いグレーの面（引用・カテゴリバッジ）
+    --mq-placeholder: #767676;   // プレースホルダー（白で 4.54:1）
+
+    // 色：アクセント（#007AFF は文字以外だけ。文字・ボタンは濃い青）
+    --mq-accent: #007aff;        // フォーカスリング・入力中の枠・選択中のアイコン・グラフ
+    --mq-primary: #0066cc;       // ボタン背景・リンク・選択中のラベル（白で 5.57:1）
+    --mq-primary-bg: #ebf3fe;    // 薄い青の面（#0066CC の文字で 4.98:1）
+
+    // 色：状態（*-fill は文字以外、無印は文字用の濃い色）
+    --mq-success-fill: #34c759;
+    --mq-warning-fill: #ff9500;
+    --mq-danger-fill: #ff3b30;
+    --mq-success: #1e7a34;       // #E8F7EC の上で 4.87:1
+    --mq-success-bg: #e8f7ec;
+    --mq-danger: #c4001a;        // #FFEBEA の上で 5.45:1
+    --mq-danger-bg: #ffebea;
+    --mq-ai: #4b49b8;            // 「AI回答あり」バッジ・sparkle アイコン（#F1F1FC の上で 6.36:1）
+    --mq-ai-bg: #f1f1fc;
+    --mq-best: #ff9500;          // ★・トロフィーなど（文字以外）
+    --mq-best-bg: #fff4e5;
+    --mq-best-text: #a34700;     // ベストアンサー・1位の文字（#FFF4E5 の上で 5.59:1）
     --mq-admin-header: #293042;
+
+    // 角丸
+    --mq-radius-sm: 8px;         // バッジ・小さい部品
+    --mq-radius-input: 11px;     // 入力欄
+    --mq-radius-btn: 12px;       // ボタン
+    --mq-radius-card: 16px;      // カード
+    --mq-radius-lg: 20px;        // 大きな入れ物・ボトムシート
+
+    // 影（基本は白い面＋薄い線。影は最小限）
+    --mq-shadow-card: 0 1px 2px rgba(0, 0, 0, .04);
+    --mq-shadow-fab: 0 4px 14px rgba(0, 102, 204, .22), 0 1px 3px rgba(0, 0, 0, .08);
+
+    // フォーカスリング（入力欄・ボタン共通）
+    --mq-focus-ring: 0 0 0 3px rgba(0, 122, 255, .25);
+
+    // 余白
+    --mq-space-1: 4px;
+    --mq-space-2: 8px;
+    --mq-space-3: 12px;
+    --mq-space-4: 16px;
+    --mq-space-5: 20px;
+    --mq-space-6: 24px;
+    --mq-space-7: 32px;
+    --mq-gutter: 20px;           // 画面の左右
+
+    // 文字サイズ
+    --mq-fs-title: 1.375rem;     // 画面タイトル 22px
+    --mq-fs-section: 1.0625rem;  // セクションタイトル 17px
+    --mq-fs-body: .9375rem;      // 本文 15px
+    --mq-fs-sub: .8125rem;       // 補助テキスト 13px
+    --mq-fs-meta: .75rem;        // メタ情報 12px
 
     // 一般画面（390px 基準。PC で開いた場合は 480px 幅で中央に表示）
     --mq-mobile-width: 480px;
-    --mq-header-height: 56px;
-    --mq-tabbar-height: 64px;
+    --mq-header-height: 52px;
+    --mq-tabbar-height: 56px;
 }

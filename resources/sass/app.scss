@@ -1,27 +1,60 @@
-// 色・寸法は docs/design/screens/ の画像から採取（画像は 1.5 倍：585px = 390px）
+// 見た目の方針は docs/spec-notes.md の「見た目の方針」。色・寸法は _tokens.scss と同じ値
 @use "bootstrap/scss/bootstrap" with (
     // 日本語のシステムフォント（Web フォントは読み込まない）
-    $font-family-sans-serif: (system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", Meiryo, "Noto Sans JP", sans-serif),
-    $primary: #2e70d9,
-    $danger: #db3333,
-    $success: #29995c,
-    $warning: #f5a624,
-    $body-bg: #f5f7fc,
-    $body-color: #212633,
-    $body-secondary-color: #6b7587,
-    $border-color: #d9dee8,
-    $link-color: #2e70d9,
-    $border-radius: .5rem,
-    $border-radius-sm: .25rem,
-    $border-radius-lg: .75rem,
-    $btn-font-weight: 700,
+    $font-family-sans-serif: (-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", "Noto Sans JP", sans-serif),
+    $font-weight-semibold: 600,
+    $headings-font-weight: 600,
+
+    // 色（文字・ボタンの青は #0066CC。#007AFF はフォーカスなど文字以外だけ）
+    $primary: #0066cc,
+    $danger: #d70015,
+    $success: #1e7a34,
+    $warning: #ff9500,
+    $body-bg: #f5f5f7,
+    $body-color: #1d1d1f,
+    $body-secondary-color: #6e6e73,
+    $border-color: #d2d2d7,
+    $link-color: #0066cc,
+    $link-decoration: underline,
+
+    // 角丸（小 8 / 入力 11 / ボタン 12 / カード 16 / 大 20）
+    $border-radius: .6875rem,
+    $border-radius-sm: .5rem,
+    $border-radius-lg: 1rem,
+    $border-radius-xl: 1.25rem,
+
+    // フォーカスリング（#007AFF・25%）
+    $focus-ring-width: 3px,
+    $focus-ring-opacity: .25,
+    $focus-ring-color: rgba(0, 122, 255, .25),
+    $input-btn-focus-width: 3px,
+    $input-btn-focus-color-opacity: .25,
+    $input-btn-focus-color: rgba(0, 122, 255, .25),
+
+    // ボタン（高さ 44px・角丸 12px・太さ 600）
+    $btn-font-weight: 600,
     $btn-white-space: nowrap,
-    $input-padding-y: .625rem,
+    $btn-padding-y: .5625rem,
+    $btn-padding-x: 1.125rem,
+    $btn-border-radius: .75rem,
+    $btn-border-radius-sm: .5rem,
+    $btn-border-radius-lg: .75rem,
+
+    // 入力欄（白・枠 #D2D2D7・高さ 44px・角丸 11px。入力中は #007AFF の枠＋リング）
+    $input-padding-y: .5625rem,
     $input-padding-x: .875rem,
     $input-bg: #fff,
-    $input-border-color: #d9dee8,
-    $input-placeholder-color: #6b7587,
-    $form-label-font-weight: 700,
+    $input-border-color: #d2d2d7,
+    $input-border-radius: .6875rem,
+    $input-placeholder-color: #767676,
+    $input-focus-border-color: #007aff,
+    $form-label-font-weight: 600,
+    $form-label-margin-bottom: .375rem,
+    $form-select-border-radius: .6875rem,
+    $form-check-input-checked-bg-color: #0066cc,
+    $form-check-input-checked-border-color: #0066cc,
+
+    // ボトムシート（段階3で見直す）
     $offcanvas-bg-color: #fff,
     $offcanvas-backdrop-bg: #212633,
     $offcanvas-backdrop-opacity: .65

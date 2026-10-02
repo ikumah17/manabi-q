@@ -46,7 +46,7 @@
 }
 
 .mq-main {
-    padding: 1.25rem 1rem 2rem;
+    padding: var(--mq-space-5) var(--mq-gutter) var(--mq-space-7);
 }
 
 // 下部タブ・フローティングボタンと重ならないよう余白を取る
@@ -129,36 +129,33 @@
     &:hover, &:focus { background: #2862c0; color: #fff; }
 }
 
-// カード（質問一覧・質問詳細など）
+// カード（質問一覧・質問詳細など）：白い面＋薄い線。影はごく薄く
 .mq-card {
-    padding: 1rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .75rem;
-    background: #fff;
+    padding: var(--mq-space-4) 1.125rem;
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
 }
 
 // ページ見出し（G1「ログイン」など）
 .mq-page-title {
-    margin: 1.5rem 0 .5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
+    margin: var(--mq-space-6) 0 var(--mq-space-2);
+    font-size: var(--mq-fs-title);
+    font-weight: 600;
+    letter-spacing: .01em;
 }
 
 .mq-page-lead {
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--mq-space-6);
     color: var(--mq-muted);
-    font-size: .875rem;
+    font-size: var(--mq-fs-sub);
 }
 
-// フォーム（入力欄・ボタンは高さ 44px）
+// フォーム（入力欄・ボタンの高さ 44px・角丸は Bootstrap の変数で指定）
 .mq-mobile {
-    .form-control, .form-select {
-        border-radius: .5rem;
-    }
-
-    .btn {
-        padding-top: .625rem;
-        padding-bottom: .625rem;
+    .form-label {
+        font-size: .875rem;
     }
 }
 
