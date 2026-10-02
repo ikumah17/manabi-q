@@ -124,7 +124,8 @@ class LayoutTest extends TestCase
         $this->assertStringContainsString('mq-pagination--admin', $admin);
     }
 
-    public function test_dev_preview_routes_are_not_available_outside_local(): void
+    // 開発用プレビュー（/_dev/*）は Phase 9 で削除済み。再び追加されていないことの回帰テスト
+    public function test_removed_dev_preview_routes_do_not_exist(): void
     {
         $this->get('/_dev/mobile')->assertNotFound();
         $this->get('/_dev/admin')->assertNotFound();

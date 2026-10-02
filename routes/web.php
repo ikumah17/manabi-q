@@ -115,9 +115,3 @@ Route::middleware('auth')->group(function () {
         Route::post('/reports/{report}/resolve', [AdminReportController::class, 'resolve'])->name('reports.resolve');
     });
 });
-
-// 開発用：共通レイアウト・部品の表示確認（ローカル環境のみ。Phase 9 で削除）
-if (app()->environment('local')) {
-    Route::view('/_dev/mobile', 'dev.mobile-preview');
-    Route::view('/_dev/admin', 'dev.admin-preview');
-}
