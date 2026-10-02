@@ -26,8 +26,24 @@ class LoginController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        // 一般ユーザー→G4、管理者→G13
-        return redirect()->intended($user->homeUrl());
+        // ログイン前に開こうとしたページ（同じサイト内のみ）へ。無ければ 一般ユーザー→G4、管理者→G13
+        $intended = $request->session()->pull('url.intended');
+
+        return redirect($this->isInternalUrl($request, $intended) ? $intended : $user->homeUrl());
+    }
+
+    /**
+     * 戻り先が同じサイト（スキーム・ホスト・ポートが一致）の URL か。外部サイトへは移さない
+     */
+    private function isInternalUrl(Request $request, mixed $url): bool
+    {
+        if (! is_string($url) || $url === '') {
+            return false;
+        }
+
+        $base = $request->getSchemeAndHttpHost();
+
+        return $url === $base || str_starts_with($url, $base.'/');
     }
 
     public function destroy(Request $request): RedirectResponse

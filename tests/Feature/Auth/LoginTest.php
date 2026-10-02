@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
@@ -141,6 +142,42 @@ class LoginTest extends TestCase
         }
         $this->post('/login', ['email' => $user->email, 'password' => 'password123'])
             ->assertRedirect(route('home'));
+    }
+
+    public function test_login_returns_to_internal_page_opened_before_login(): void
+    {
+        $user = User::factory()->create(['password' => 'password123']);
+
+        // 未ログインで保護されたページを開く → G1 へ（戻り先が記録される）
+        $this->get('/home?page=2')->assertRedirect(route('login'));
+
+        $this->post('/login', ['email' => $user->email, 'password' => 'password123'])
+            ->assertRedirect(url('/home?page=2'));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function externalUrls(): array
+    {
+        return [
+            'other domain' => ['https://evil.example.com/home'],
+            'protocol relative' => ['//evil.example.com/home'],
+            'same host as prefix of other domain' => ['http://localhost.evil.example.com/home'],
+            'javascript scheme' => ['javascript:alert(1)'],
+        ];
+    }
+
+    #[DataProvider('externalUrls')]
+    public function test_login_never_redirects_to_external_url(string $url): void
+    {
+        $user = User::factory()->create(['password' => 'password123']);
+
+        $this->withSession(['url.intended' => $url])
+            ->post('/login', ['email' => $user->email, 'password' => 'password123'])
+            ->assertRedirect(route('home'));
+
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_logged_in_user_opening_login_is_sent_to_own_top(): void
