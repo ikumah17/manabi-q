@@ -23,7 +23,7 @@
                 <span>{{ $label }}：{{ $post->user->name }}</span>
                 <x-datetime :at="$post->created_at" />
             </div>
-            <div class="mq-text">{{ Str::limit($post->body, 200) }}</div>
+            <div class="mq-text">{{ Str::limitChars($post->body, 100) }}</div>
         </div>
 
         {{-- ② 通報理由（必須） --}}

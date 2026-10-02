@@ -21,7 +21,7 @@
             <span>回答 {{ $question->answers_count }}</span>
         </div>
     @else
-        <p class="mq-question-card__excerpt">{{ Str::limit(Str::squish($question->body), 50) }}</p>
+        <p class="mq-question-card__excerpt">{{ Str::limitChars(Str::squish($question->body), 50) }}</p>
         <div class="mq-meta">
             <span>{{ $question->user->name }}</span>
             <x-datetime :at="$question->created_at" />

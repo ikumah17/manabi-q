@@ -117,7 +117,7 @@
                                 <span>{{ $answer->user->name }}</span>
                                 <x-datetime :at="$answer->created_at" />
                             </div>
-                            <div class="mq-text">{{ Str::limit($answer->body, 200) }}</div>
+                            <div class="mq-text">{{ Str::limitChars($answer->body, 2000) }}</div>
                         </div>
 
                         {{-- ② 評価（★1〜5・必須） --}}
