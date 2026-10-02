@@ -30,4 +30,13 @@ class AppConfigTest extends TestCase
         $this->assertArrayHasKey('key', config('services.gemini'));
         $this->assertNotEmpty(config('services.gemini.model'));
     }
+
+    /**
+     * テストでは .env の本物の API キーを読み込まない（phpunit.xml で空にしている）
+     */
+    public function test_real_gemini_key_is_not_loaded_in_tests(): void
+    {
+        $this->assertEmpty(config('services.gemini.key'));
+        $this->assertSame('https://gemini.test/v1beta', config('services.gemini.base_url'));
+    }
 }
