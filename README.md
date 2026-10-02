@@ -1,58 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# まなびQ
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+大学の学内向け Q&A 掲示板です。学生が質問を投稿し、ほかの学生が回答します。質問者はベストアンサーを選んで★で評価できます。質問の投稿時に希望すれば、AI（Google Gemini API）がすぐに参考回答を返します。管理者は投稿・ユーザー・カテゴリ・通報を管理します。
 
-## About Laravel
+- 一般ユーザーの画面はスマートフォン向け（390px 基準）、管理者の画面は PC 向け（1280px 基準）です。
+- 設計書は `docs/design/` にあります（画面一覧・画面遷移図、画面レイアウト、データベース設計書、画面画像 G1〜G18）。
+- 設計書に加えて守る決定事項は `docs/spec-notes.md` にあります。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 主な機能
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| 対象 | 画面 | 内容 |
+|---|---|---|
+| 共通 | G1〜G3 | ログイン・ログアウト、会員登録、登録完了（登録後は自動でログインせず G1 に戻る） |
+| 一般 | G4 | 質問一覧（キーワード検索、カテゴリでの絞り込み、並び替え、回答者ランキング TOP5） |
+| 一般 | G5〜G7 | 質問の投稿、投稿完了、質問の詳細（AI 回答の表示と再試行） |
+| 一般 | G8・G9 | 回答の投稿（獲得したスタンプを添付できる）、ベストアンサーの選択と★評価 |
+| 一般 | G10〜G12 | 回答者ランキング、マイページ、プロフィール編集 |
+| 一般 | G17 | 質問・回答の通報（同じ投稿への重複通報はできない） |
+| 管理者 | G13 | ダッシュボード（件数の集計とグラフ） |
+| 管理者 | G14〜G16 | 投稿管理（公開・非表示・削除）、ユーザー管理（利用停止・再開）、カテゴリ管理 |
+| 管理者 | G18 | 通報管理（対象の非表示、対応済みにする） |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 技術構成
 
-## Learning Laravel
+| 区分 | 使用技術 |
+|---|---|
+| バックエンド | Laravel 13 / PHP 8.3 |
+| データベース | MySQL 8.4（テストでは SQLite のインメモリ DB） |
+| フロントエンド | Blade、Bootstrap 5.3、Chart.js、Vite |
+| AI 回答 | Google Gemini API |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 動作要件
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.3 以上
+  - 拡張: `pdo_mysql`、`mbstring`
+  - `intl` 拡張を**推奨**します。カテゴリ名の重複判定では `Normalizer`（NFKC 正規化）を使います。`intl` がない環境でも、依存パッケージに含まれる `symfony/polyfill-intl-normalizer` が代わりに動きますが、処理は遅くなります。
+- Composer 2
+- Node.js 22 と npm（画面のビルドに使います）
+- MySQL 8.4（文字コード `utf8mb4`）
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## セットアップ
 
-## Agentic Development
+1. 依存パッケージをインストールします。
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+   ```bash
+   composer install
+   npm install
+   ```
+
+2. 設定ファイルを作り、アプリケーションキーを生成します。
+
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+3. MySQL にデータベースを作り（文字コード `utf8mb4`）、`.env` の `DB_DATABASE`・`DB_USERNAME`・`DB_PASSWORD` を自分の環境に合わせます。
+
+4. テーブルを作り、初期データ（カテゴリとスタンプ）を登録します。
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. 管理者アカウントを作ります。ユーザー名とメールアドレスを聞かれます。パスワードは入力しても画面に表示されません（半角英数字 8〜64 文字）。
+
+   ```bash
+   php artisan admin:create
+   ```
+
+6. 画面のファイルをビルドし、サーバーを起動します。
+
+   ```bash
+   npm run build
+   php artisan serve
+   ```
+
+   ブラウザで `http://localhost:8000` を開くとログイン画面（G1）が表示されます。一般ユーザーは G2 の会員登録から作れます。
+
+## AI 回答（Gemini API）の設定
+
+`.env` に次の項目を設定します。API キーは Google AI Studio で各自が発行してください。キーは `.env` にだけ書き、Git に登録したり README・画面・ログに書いたりしないでください。
+
+| 項目 | 内容 |
+|---|---|
+| `GEMINI_API_KEY` | Gemini API のキー。空の場合、AI 回答は失敗として扱われ、質問者は G6・G7 から再試行できます（キーが空のままでは再試行も失敗します） |
+| `GEMINI_MODEL` | 使うモデル名（既定値 `gemini-3.5-flash-lite`） |
+
+**AI 回答で外部に送られる情報**
+
+- G5 の「AIの即時回答を受け取る」にチェックした質問だけ（**チェックは初期状態でオン**）、その質問の**カテゴリ名・タイトル・本文が Google の Gemini API に送信されます**。投稿者のユーザー名・メールアドレス・ユーザー ID は送りません。
+- 送信の前に、タイトルと本文に含まれる**メールアドレス・電話番号・投稿者自身の登録名だけ**を伏せ字に置き換えます。
+- それ以外の個人情報（**他人の氏名や学籍番号など**）は判定できないため、**置き換えられずにそのまま送信されます**。利用者には、質問に個人情報を書かないよう周知してください。
+
+## テスト
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan test
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+テストは SQLite のインメモリ DB で動きます（`phpunit.xml` で指定）。MySQL のデータベースには影響しません。Gemini API も実際には呼びません。
 
-## Contributing
+## 本番環境での注意
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `.env` で `APP_ENV=production`・**`APP_DEBUG=false`** にしてください。`APP_DEBUG=true` のままだと、エラー時に内部の情報が画面に表示されます。
+- **DB 接続のタイムゾーン**: アプリのタイムゾーンは `Asia/Tokyo` ですが、DB 接続のタイムゾーンは指定していません（`config/database.php` の `timezone` は未設定で、MySQL サーバーの設定 `SYSTEM` に従います）。本番環境では MySQL 側または接続設定でタイムゾーンを固定してください。固定しないと `TIMESTAMP` 型の日時がずれることがあります。
+- **カテゴリ名の照合順序**: `categories.name` の照合順序は `utf8mb4_unicode_ci` です。MySQL はこの照合順序で「は」と「ば」、ひらがなとカタカナ、全角と半角、大文字と小文字を同じ文字とみなします。そのため、アプリの判定では別の名前でも、DB の一意制約で登録が拒否される場合があります。その場合も画面に表示されるのは通常の重複と同じメッセージ「同じ名前のカテゴリが既に存在します」です。
 
-## Code of Conduct
+## エラー画面
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+403・404・419・429・500・503 と、その他の 4xx・5xx には日本語のエラー画面（`resources/views/errors/`）を表示します。例外の詳細は表示しません。
 
-## Security Vulnerabilities
+## 主なディレクトリ
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| 場所 | 内容 |
+|---|---|
+| `app/Http/Controllers/` | 画面ごとのコントローラー（管理者用は `Admin/`） |
+| `app/Services/Gemini/`・`app/Services/AiAnswer/` | Gemini API の呼び出し、プロンプトの組み立てと応答の整形 |
+| `app/Console/Commands/CreateAdmin.php` | 管理者作成コマンド `admin:create` |
+| `resources/views/` | 画面（Blade）。共通レイアウトは `components/layouts/` |
+| `resources/sass/`・`resources/js/` | スタイルと画面用スクリプト |
+| `database/migrations/`・`database/seeders/` | テーブル定義と初期データ |
+| `docs/design/` | 設計書と画面画像 |
+| `tests/` | 自動テスト |
 
-## License
+## 対象外
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- AWS などへのデプロイ手順は含みません。
