@@ -42,7 +42,7 @@
 
         {{-- ④ カテゴリ別質問数 --}}
         <section class="col-5">
-            <div class="mq-panel h-100 mb-0">
+            <div class="mq-panel mb-0">
                 <h2 class="mq-panel-title" id="chart-category-title">カテゴリ別質問数</h2>
                 <div class="mq-chart" style="height: {{ max(120, $byCategory->count() * 30 + 20) }}px">
                     <canvas data-chart='@json($barChart)' role="img" aria-labelledby="chart-category-title"></canvas>

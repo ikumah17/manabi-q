@@ -140,7 +140,8 @@ function renderChart(canvas, { type, labels, data }) {
             layout: { padding: { right: 40 } },
             scales: {
                 x: { display: false, beginAtZero: true },
-                y: { grid: { display: false }, border: { display: false }, ticks: { color: '#212633' } },
+                // カテゴリ名は左寄せ（設計画像どおり）
+                y: { grid: { display: false }, border: { display: false }, ticks: { color: '#212633', crossAlign: 'far' } },
             },
         },
         plugins: [barValueLabels],
