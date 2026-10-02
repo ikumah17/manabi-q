@@ -19,7 +19,7 @@ return [
     'after_or_equal' => ':attributeには:date以降の日付を指定してください',
     'alpha' => ':attributeは英字のみで入力してください',
     'alpha_dash' => ':attributeは英数字・ハイフン・アンダースコアのみで入力してください',
-    'alpha_num' => ':attributeは英数字のみで入力してください',
+    'alpha_num' => ':attributeは半角英数字のみで入力してください',
     'any_of' => ':attributeの値が正しくありません',
     'array' => ':attributeは配列で指定してください',
     'array_keys' => ':attributeには次の項目が必要です：:values',
