@@ -19,10 +19,8 @@
         {{-- ⑨ 通報：Phase 7 で G17 と合わせて実装 --}}
     </article>
 
-    {{-- ③ AI回答（ある場合のみ） --}}
-    @if ($question->aiAnswer)
-        <x-ai-answer :ai-answer="$question->aiAnswer" class="mb-3" />
-    @endif
+    {{-- ③ AI回答（ある場合のみ。取得できなかった場合は質問者本人にだけその旨） --}}
+    <x-ai-answer-area :question="$question" :is-owner="$isOwner" class="mb-3" />
 
     {{-- ④ ベストアンサー（★評価・スタンプ） --}}
     @if ($bestAnswer)

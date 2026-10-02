@@ -13,10 +13,10 @@
         <div class="mq-text">{{ $question->body }}</div>
     </div>
 
-    {{-- ③④ AI回答・注意書き（AI即時回答を希望し、回答がある場合のみ） --}}
-    @if ($question->use_ai && $question->aiAnswer)
-        <x-ai-answer :ai-answer="$question->aiAnswer" class="mb-3"
-                     note="※ AIの回答は誤りを含む場合があります。参考情報としてご利用ください。" />
+    {{-- ③④ AI回答・注意書き（AI即時回答を希望した場合のみ。取得できなかった場合はその旨） --}}
+    @if ($question->use_ai)
+        <x-ai-answer-area :question="$question" :is-owner="true" class="mb-3"
+                          note="※ AIの回答は誤りを含む場合があります。参考情報としてご利用ください。" />
     @endif
 
     {{-- ⑤ 質問詳細を見る ⑥ ホームへ戻る --}}

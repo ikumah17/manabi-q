@@ -504,3 +504,10 @@
     color: var(--mq-muted);
     font-size: .875rem;
 }
+
+// G6・G7 ③ AI回答を取得できなかった場合（質問者本人のみ）
+.mq-ai-answer__unavailable {
+    margin: 0;
+    color: var(--mq-muted);
+    font-size: .9375rem;
+}

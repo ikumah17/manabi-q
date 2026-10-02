@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GenerateAiAnswer;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Models\Category;
 use App\Models\Question;
@@ -22,14 +23,18 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function store(StoreQuestionRequest $request): RedirectResponse
+    public function store(StoreQuestionRequest $request, GenerateAiAnswer $generateAiAnswer): RedirectResponse
     {
         $question = $request->user()->questions()->create([
             ...$request->safe()->only(['title', 'category_id', 'body']),
             'use_ai' => $request->boolean('use_ai'),
         ]);
 
-        return redirect()->route('questions.complete', $question);
+        // 質問の保存を確定させてから AI 即時回答を生成する（失敗しても投稿は成功）
+        $aiResult = $question->use_ai ? $generateAiAnswer->handle($question) : null;
+
+        return redirect()->route('questions.complete', $question)
+            ->with('ai_error', $aiResult?->message());
     }
 
     /**
