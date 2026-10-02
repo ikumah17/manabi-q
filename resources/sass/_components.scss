@@ -81,6 +81,11 @@ a {
     --bs-btn-active-border-color: #f2b8b5;
 }
 
+// 画面の主な操作のボタン（高さ 48px。G1「ログイン」など）
+.mq-btn-tall {
+    min-height: 3rem;
+}
+
 // 控えめな主ボタン（薄い青の面に濃い青の文字 4.98:1。G4「検索」など）
 .btn-tinted {
     --bs-btn-color: var(--mq-primary);

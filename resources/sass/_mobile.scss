@@ -171,6 +171,20 @@
     font-size: var(--mq-fs-sub);
 }
 
+// ログイン（G1）：情報が少ないので余白を広く取り、画面の中央より少し上に置く
+.mq-auth {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - var(--mq-header-height) - 8rem);
+    padding-bottom: 8vh;
+
+    .mq-page-title {
+        margin-top: 0;
+        font-size: 1.5rem;
+    }
+}
+
 // フォーム（入力欄・ボタンの高さ 44px・角丸は Bootstrap の変数で指定）
 .mq-mobile {
     .form-label {
