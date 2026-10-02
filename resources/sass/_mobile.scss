@@ -194,3 +194,35 @@
     color: var(--mq-muted);
     font-size: .8125rem;
 }
+
+// 完了画面（G3：緑の丸にチェック・見出し・説明文）
+.mq-complete {
+    margin: 6.25rem 0 1rem;
+}
+
+.mq-complete__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background: var(--mq-success-bg);
+    color: var(--mq-success);
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.mq-complete__title {
+    margin-bottom: .25rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+}
+
+.mq-complete__text {
+    margin: 0;
+    color: var(--mq-muted);
+    font-size: .875rem;
+}
