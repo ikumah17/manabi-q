@@ -48,7 +48,20 @@
                         <td class="text-nowrap">{{ $post->user_name }}</td>
                         <td class="text-nowrap">{{ \Illuminate\Support\Carbon::parse($post->created_at)->format('Y/m/d H:i') }}</td>
                         <td><x-badge :variant="$published ? 'success' : 'muted'">{{ $published ? '公開' : '非表示' }}</x-badge></td>
-                        <td class="text-nowrap">{{-- ⑥⑦ 操作は 8-5 で追加 --}}</td>
+                        <td class="text-nowrap">
+                            @php($kind = $isQuestion ? 'questions' : 'answers')
+                            {{-- ⑥ 公開／非表示切替 --}}
+                            <form method="POST" action="{{ route('admin.posts.'.$kind.'.'.($published ? 'hide' : 'publish'), $post->id) }}"
+                                  class="d-inline" data-submit-once>
+                                @csrf
+                                <button type="submit" class="btn btn-outline-primary mq-btn-xs">{{ $published ? '非表示' : '公開' }}</button>
+                            </form>
+                            {{-- ⑦ 削除（確認モーダル） --}}
+                            <button type="button" class="btn btn-danger mq-btn-xs"
+                                    data-bs-toggle="modal" data-bs-target="#delete-post-modal"
+                                    data-confirm-action="{{ route('admin.posts.'.$kind.'.destroy', $post->id) }}"
+                                    data-confirm-message="{{ ($isQuestion ? '質問：' : '回答：').Str::limitChars($content, 80) }}">削除</button>
+                        </td>
                     </tr>
                 @empty
                     <tr><td colspan="7" class="text-center text-body-secondary py-4">該当する投稿はありません</td></tr>
@@ -59,4 +72,8 @@
 
     {{-- ⑧ ページネーション（20件ごと） --}}
     {{ $posts->links('pagination.admin') }}
+
+    <x-confirm-modal id="delete-post-modal" title="投稿を削除しますか？"
+                     description="次の投稿を完全に削除します。質問を削除すると、その質問への回答・AI回答・通報もすべて削除されます。この操作は元に戻せません。"
+                     confirm-label="削除する" method="DELETE" />
 </x-layouts.admin>

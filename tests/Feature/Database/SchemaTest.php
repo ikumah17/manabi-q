@@ -42,6 +42,36 @@ class SchemaTest extends TestCase
     }
 
     /**
+     * 外部キーと削除時の動作（連動削除の範囲）を固定する。
+     * 連動（CASCADE）は questions → ai_answers / answers / reports、answers → reports の一方向のみで循環しない。
+     * ユーザー・カテゴリ・スタンプは参照されていると削除できない（RESTRICT）。best_answer_id 列は無い（answers.is_best で表す）
+     */
+    public function test_foreign_keys_and_delete_actions(): void
+    {
+        $actual = [];
+        foreach (['questions', 'ai_answers', 'answers', 'reports'] as $table) {
+            foreach (Schema::getForeignKeys($table) as $fk) {
+                $actual[] = $table.'.'.implode(',', $fk['columns']).' -> '.$fk['foreign_table'].' '.strtolower($fk['on_delete']);
+            }
+        }
+        sort($actual);
+
+        $this->assertSame([
+            'ai_answers.question_id -> questions cascade',
+            'answers.question_id -> questions cascade',
+            'answers.stamp_id -> stamps restrict',
+            'answers.user_id -> users restrict',
+            'questions.category_id -> categories restrict',
+            'questions.user_id -> users restrict',
+            'reports.answer_id -> answers cascade',
+            'reports.question_id -> questions cascade',
+            'reports.user_id -> users restrict',
+        ], $actual);
+        $this->assertFalse(Schema::hasColumn('questions', 'best_answer_id'));
+        $this->assertFalse(Schema::hasColumn('answers', 'best_answer_id'));
+    }
+
+    /**
      * 設計書のインデックス（ユニーク制約を含む）
      */
     public function test_design_indexes_exist(): void

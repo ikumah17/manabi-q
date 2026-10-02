@@ -88,6 +88,15 @@ Route::middleware('auth')->group(function () {
 
         // G14 投稿管理
         Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
+        Route::controller(AdminPostController::class)->group(function () {
+            $missing = fn () => AdminPostController::missing();
+            Route::post('/posts/questions/{question}/hide', 'hideQuestion')->name('posts.questions.hide')->missing($missing);
+            Route::post('/posts/questions/{question}/publish', 'publishQuestion')->name('posts.questions.publish')->missing($missing);
+            Route::delete('/posts/questions/{question}', 'destroyQuestion')->name('posts.questions.destroy')->missing($missing);
+            Route::post('/posts/answers/{answer}/hide', 'hideAnswer')->name('posts.answers.hide')->missing($missing);
+            Route::post('/posts/answers/{answer}/publish', 'publishAnswer')->name('posts.answers.publish')->missing($missing);
+            Route::delete('/posts/answers/{answer}', 'destroyAnswer')->name('posts.answers.destroy')->missing($missing);
+        });
 
         // G15 ユーザー管理（削除は無し）
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
