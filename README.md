@@ -33,7 +33,7 @@
 
 - PHP 8.3 以上
   - 拡張: `pdo_mysql`、`mbstring`
-  - `intl` 拡張を**推奨**します。カテゴリ名の重複判定では `Normalizer`（NFKC 正規化）を使います。`intl` がない環境でも、依存パッケージに含まれる `symfony/polyfill-intl-normalizer` が代わりに動きますが、処理は遅くなります。
+  - `intl` 拡張を**推奨**します。カテゴリ名の重複判定では `Normalizer`（NFKC 正規化）を使います。`intl` がない場合に代わりに使われる `symfony/polyfill-intl-normalizer` が依存パッケージに含まれていますが、`intl` なしでのアプリ全体の動作は確認していません。
 - Composer 2
 - Node.js 22 と npm（画面のビルドに使います）
 - MySQL 8.4（文字コード `utf8mb4`）
