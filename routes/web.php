@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\AiAnswerController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Auth\LoginController;
@@ -81,6 +82,9 @@ Route::middleware('auth')->group(function () {
     // 管理者画面（一般ユーザーは 403）
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        // G18 通報管理
+        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
     });
 });
 

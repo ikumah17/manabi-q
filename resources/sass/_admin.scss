@@ -125,3 +125,24 @@
     font-size: .75rem;
     font-weight: 700;
 }
+
+// 検索欄の幅（G18 など）
+.mq-field-sm { width: 10rem; }
+.mq-field-md { width: 13.5rem; }
+
+// 表の「対象の内容」など長い文字列の列
+.mq-cell-content {
+    max-width: 22rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mq-cell-sub {
+    max-width: 14rem;
+    overflow: hidden;
+    color: var(--mq-muted);
+    font-size: .75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
