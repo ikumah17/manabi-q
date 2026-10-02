@@ -67,6 +67,14 @@ class User extends Authenticatable
     }
 
     /**
+     * ログイン後の遷移先（G1：一般→G4、管理者→G13）
+     */
+    public function homeUrl(): string
+    {
+        return route($this->isAdmin() ? 'admin.dashboard' : 'home');
+    }
+
+    /**
      * @return HasMany<Question, $this>
      */
     public function questions(): HasMany
