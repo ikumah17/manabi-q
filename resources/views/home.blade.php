@@ -41,7 +41,8 @@
     {{-- ⑧ ページネーション（10件ごと） --}}
     {{ $questions->links() }}
 
-    {{-- ⑨⑩ 回答者ランキング TOP5・ランキングへ：Phase 6 で G10 と合わせて実装 --}}
+    {{-- ⑨⑩ 回答者ランキング TOP5・ランキングをもっと見る（G10 へ） --}}
+    <x-ranking-top :entries="$topRankers" class="mt-3" />
 
     {{-- 一般ユーザーのログアウトは設計上 G11（マイページ）にある。G11 の実装（Phase 6）までの確認用 --}}
     <form method="POST" action="{{ route('logout') }}" class="mt-4">

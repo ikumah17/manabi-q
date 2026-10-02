@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Question;
+use App\Services\Ranking\RankingService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -21,7 +22,7 @@ class HomeController extends Controller
         'answers' => '回答の多い順',
     ];
 
-    public function index(Request $request): View
+    public function index(Request $request, RankingService $ranking): View
     {
         $categories = Category::ordered()->get();
 
@@ -46,6 +47,7 @@ class HomeController extends Controller
             'keyword' => $keyword,
             'categoryId' => $categoryId,
             'sort' => $sort,
+            'topRankers' => $ranking->top(5),
         ]);
     }
 }

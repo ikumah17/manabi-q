@@ -511,3 +511,150 @@
     color: var(--mq-muted);
     font-size: .9375rem;
 }
+
+// ---- ランキング（G4 ⑨⑩・G10） ----
+
+// 順位の丸（1位 金・2位 銀・3位 銅・4位以降 灰色）
+.mq-rank-badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--mq-gray-bg);
+    color: var(--mq-text);
+    font-weight: 700;
+
+    &--1 { background: #f5a624; color: #fff; }
+    &--2 { background: #a6abb2; color: #fff; }
+    &--3 { background: #bf804c; color: #fff; }
+}
+
+// G10 ② あなたの順位
+.mq-my-rank {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .875rem 1rem;
+    border: 1px solid var(--mq-primary);
+    border-radius: .75rem;
+    background: var(--mq-primary-bg);
+}
+
+.mq-my-rank__label {
+    color: var(--mq-primary);
+    font-size: .875rem;
+    font-weight: 700;
+}
+
+.mq-my-rank__rank {
+    color: var(--mq-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.mq-my-rank__detail {
+    font-size: .875rem;
+    line-height: 1.35;
+}
+
+// G10 ① ランキング一覧
+.mq-ranking-list {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--mq-border);
+    border-radius: .75rem;
+    background: #fff;
+    list-style: none;
+}
+
+.mq-ranking-list__item {
+    display: flex;
+    align-items: center;
+    gap: .875rem;
+    padding: .75rem 1rem;
+
+    & + & { border-top: 1px solid var(--mq-border); }
+
+    &.is-mine { background: var(--mq-primary-bg); }
+}
+
+.mq-ranking-list__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.mq-ranking-list__name {
+    overflow: hidden;
+    font-weight: 700;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mq-ranking-list__sub {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: .75rem;
+    color: var(--mq-muted);
+    font-size: .75rem;
+}
+
+.mq-ranking-list__count {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.1;
+}
+
+.mq-ranking-list__number {
+    color: var(--mq-primary);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.mq-ranking-list__unit {
+    color: var(--mq-muted);
+    font-size: .6875rem;
+}
+
+// G4 ⑨ 回答者ランキング TOP5
+.mq-ranking-top__title {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.mq-ranking-top__row {
+    display: flex;
+    gap: .75rem;
+    padding: .125rem 0;
+}
+
+.mq-ranking-top__rank {
+    min-width: 2.25rem;
+    font-weight: 700;
+
+    &.is-first { color: var(--mq-best); }
+}
+
+.mq-ranking-top__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mq-ranking-top__count {
+    color: var(--mq-muted);
+    font-size: .875rem;
+}
+
+.mq-ranking-top__more {
+    display: inline-block;
+    margin-top: .375rem;
+}
