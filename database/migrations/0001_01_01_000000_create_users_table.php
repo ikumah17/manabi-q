@@ -11,22 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // データベース設計書「ユーザー（users）」
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('name', 20);
+            $table->string('email', 255)->unique();
+            $table->string('password', 255);
+            $table->tinyInteger('role')->default(0)->comment('0：一般ユーザー、1：管理者');
+            $table->tinyInteger('status')->default(1)->comment('0：利用停止、1：利用中');
             $table->rememberToken();
             $table->timestamps();
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
+        // セッション管理用（Laravel 標準。設計書の7テーブル外）
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -43,7 +40,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };
