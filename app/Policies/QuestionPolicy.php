@@ -28,6 +28,17 @@ class QuestionPolicy
     }
 
     /**
+     * G6・G7 ③ AI回答の再試行：質問者本人・AI回答を希望・まだAI回答が無い場合のみ
+     * （非表示の質問は view() で 404 にする）
+     */
+    public function retryAiAnswer(User $user, Question $question): bool
+    {
+        return $question->user_id === $user->id
+            && $question->use_ai
+            && ! $question->aiAnswer()->exists();
+    }
+
+    /**
      * G7 ⑥・G9 ベストアンサーに選ぶ：質問者本人・未解決・公開中の他人の回答のみ
      */
     public function chooseBest(User $user, Question $question, Answer $answer): bool

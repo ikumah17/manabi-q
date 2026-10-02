@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\AiAnswerController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
         Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
         Route::get('/questions/{question}/complete', [QuestionController::class, 'complete'])->name('questions.complete');
+
+        // G6・G7 ③ AI回答の再試行（質問者本人のみ）
+        Route::post('/questions/{question}/ai-answer', [AiAnswerController::class, 'store'])->name('questions.ai-answer.retry');
 
         // G8 回答投稿
         Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
