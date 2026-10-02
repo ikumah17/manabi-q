@@ -1,10 +1,56 @@
-{{-- G4 ホーム（Phase 3 時点の仮画面。Phase 4 で質問一覧に置き換える） --}}
+{{-- G4 ホーム（質問一覧） --}}
 <x-layouts.mobile tab="home" title="ホーム">
-    <p class="text-body-secondary">{{ auth()->user()->name }} さんでログインしています。（質問一覧は準備中です）</p>
-
-    {{-- 一般ユーザーのログアウトは設計上 G11（マイページ）にある。G11 の実装までの確認用 --}}
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="btn btn-outline-danger w-100">ログアウト</button>
+    {{-- ②〜⑤ 検索条件 --}}
+    <form method="GET" action="{{ route('home') }}" class="mb-3" role="search">
+        <div class="d-flex gap-2 mb-2">
+            <label for="keyword" class="visually-hidden">キーワード</label>
+            <input type="search" id="keyword" name="keyword" value="{{ $keyword }}" class="form-control"
+                   maxlength="50" placeholder="キーワードで検索">
+            <button type="submit" class="btn btn-primary px-4">検索</button>
+        </div>
+        <div class="row g-2">
+            <div class="col-6">
+                <label for="category" class="visually-hidden">カテゴリ</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="">カテゴリ：すべて</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @selected($categoryId === $category->id)>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-6">
+                <label for="sort" class="visually-hidden">並び替え</label>
+                <select id="sort" name="sort" class="form-select">
+                    @foreach ($sorts as $value => $label)
+                        <option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </form>
+
+    {{-- ⑦ 質問一覧 --}}
+    <div class="mq-stack">
+        @forelse ($questions as $question)
+            <x-question-card :question="$question" />
+        @empty
+            <p class="mq-empty">該当する質問はありません</p>
+        @endforelse
+    </div>
+
+    {{-- ⑧ ページネーション（10件ごと） --}}
+    {{ $questions->links() }}
+
+    {{-- ⑨⑩ 回答者ランキング TOP5・ランキングへ：Phase 6 で G10 と合わせて実装 --}}
+
+    {{-- 一般ユーザーのログアウトは設計上 G11（マイページ）にある。G11 の実装（Phase 6）までの確認用 --}}
+    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+        @csrf
+        <button type="submit" class="btn btn-outline-danger w-100">ログアウト（G11 実装までの仮）</button>
+    </form>
+
+    {{-- ⑥ 質問を投稿する --}}
+    <x-slot:fab>
+        <x-fab :href="route('questions.create')">質問する</x-fab>
+    </x-slot:fab>
 </x-layouts.mobile>

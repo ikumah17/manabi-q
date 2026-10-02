@@ -226,3 +226,281 @@
     color: var(--mq-muted);
     font-size: .875rem;
 }
+
+// ---- 質問・回答（G4〜G9） ----
+
+.mq-stack {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.mq-empty {
+    margin: 1.5rem 0;
+    color: var(--mq-muted);
+    text-align: center;
+}
+
+.mq-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    margin-bottom: .375rem;
+}
+
+// 投稿者・日時・回答数（G4 は空白区切り、G7 は「・」区切り）
+.mq-meta {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: .75rem;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+}
+
+.mq-meta--dot {
+    column-gap: 0;
+
+    > * + *::before {
+        content: "・";
+    }
+}
+
+// 改行を保ったまま表示（HTML はエスケープ済み）
+.mq-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+// G4 ⑦ 質問カード
+.mq-question-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover { border-color: var(--mq-primary); color: inherit; }
+}
+
+.mq-question-card__title {
+    margin: 0 0 .125rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.mq-question-card__excerpt {
+    margin: 0 0 .25rem;
+    overflow: hidden;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+// G6 ②・G7 ① 質問タイトル
+.mq-question-title {
+    margin: 0 0 .25rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.mq-section-title {
+    margin: 1.25rem 0 .75rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+}
+
+// G5 ④ AI即時回答のチェック
+.mq-ai-option {
+    display: flex;
+    gap: .75rem;
+    padding: 1rem;
+    border-radius: .75rem;
+    background: var(--mq-ai-bg);
+}
+
+.mq-ai-option__check {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: .125rem;
+
+    &:checked {
+        border-color: var(--mq-ai);
+        background-color: var(--mq-ai);
+    }
+}
+
+.mq-ai-option__label {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.mq-ai-option__title {
+    color: var(--mq-ai);
+    font-weight: 700;
+}
+
+.mq-ai-option__text {
+    color: var(--mq-muted);
+    font-size: .8125rem;
+}
+
+// G6 ③④・G7 ③ AIの即時回答
+.mq-ai-answer {
+    padding: 1rem;
+    border: 1px solid #e2d9fa;
+    border-radius: .75rem;
+    background: var(--mq-ai-bg);
+}
+
+.mq-ai-answer__head {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .375rem;
+}
+
+.mq-ai-answer__label {
+    padding: .125rem .5rem;
+    border-radius: .25rem;
+    background: var(--mq-ai);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.mq-ai-answer__title {
+    margin: 0;
+    color: var(--mq-ai);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.mq-ai-answer__note {
+    margin: .375rem 0 0;
+    color: var(--mq-muted);
+    font-size: .75rem;
+}
+
+// G7 ④ ベストアンサー
+.mq-best-answer {
+    padding: 1rem;
+    border: 1px solid var(--mq-best);
+    border-radius: .75rem;
+    background: var(--mq-best-bg);
+}
+
+.mq-stars {
+    color: var(--mq-best);
+    font-size: 1.25rem;
+    letter-spacing: .05em;
+    line-height: 1;
+}
+
+// 添付スタンプ（装飾のみ）
+.mq-stamp-chip {
+    display: inline-block;
+    padding: .125rem .625rem;
+    border-radius: 999px;
+    background: var(--mq-best-bg);
+    color: var(--mq-best-text);
+    font-size: .8125rem;
+    font-weight: 700;
+}
+
+.mq-stamp-chip__star {
+    color: var(--mq-best);
+}
+
+.mq-btn-pill {
+    border-radius: .5rem;
+}
+
+// G8 ① 回答する質問・G9 ① 対象回答（灰色の枠）
+.mq-quote {
+    padding: .75rem 1rem;
+    border-radius: .5rem;
+    background: var(--mq-gray-bg);
+}
+
+.mq-quote__label {
+    color: var(--mq-muted);
+    font-size: .75rem;
+}
+
+// G8 ③ スタンプ選択（2列のラジオボタン）
+.mq-stamp-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+}
+
+.mq-stamp-option {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .625rem .75rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .5rem;
+    background: #fff;
+    font-size: .875rem;
+    font-weight: 700;
+    cursor: pointer;
+
+    .form-check-input { margin: 0; }
+
+    &:has(:checked) {
+        border-color: var(--mq-primary);
+        background: var(--mq-primary-bg);
+    }
+
+    &.is-locked {
+        background: var(--mq-gray-bg);
+        color: var(--mq-muted);
+        cursor: not-allowed;
+    }
+}
+
+// G9 ② 星評価（右から 5〜1 の順に並べ、選択した星より左を塗る）
+.mq-rating {
+    text-align: center;
+}
+
+.mq-rating__stars {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: .25rem;
+}
+
+.mq-rating__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mq-rating__star {
+    color: var(--mq-border);
+    font-size: 2.75rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.mq-rating__input:checked ~ .mq-rating__star,
+.mq-rating__star:hover,
+.mq-rating__star:hover ~ .mq-rating__star {
+    color: var(--mq-best);
+}
+
+.mq-rating__input:focus-visible + .mq-rating__star {
+    outline: 2px solid var(--mq-primary);
+    outline-offset: 2px;
+    border-radius: .25rem;
+}
+
+.mq-rating__value {
+    margin-top: .25rem;
+    color: var(--mq-muted);
+    font-size: .875rem;
+}
