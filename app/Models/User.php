@@ -67,6 +67,14 @@ class User extends Authenticatable
     }
 
     /**
+     * 公開中の回答数（ランキング・スタンプ獲得の判定に使う）
+     */
+    public function publishedAnswerCount(): int
+    {
+        return $this->answers()->published()->count();
+    }
+
+    /**
      * ログイン後の遷移先（G1：一般→G4、管理者→G13）
      */
     public function homeUrl(): string

@@ -42,6 +42,14 @@ class Stamp extends Model
     }
 
     /**
+     * 回答数が必要数に達していれば獲得済み（回答に添付できる）
+     */
+    public function isEarnedWith(int $answerCount): bool
+    {
+        return $answerCount >= $this->required_count;
+    }
+
+    /**
      * 画像の URL（image_path は public からの相対パス）
      */
     protected function imageUrl(): Attribute
