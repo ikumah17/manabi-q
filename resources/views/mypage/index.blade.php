@@ -15,6 +15,8 @@
                 </div>
             </div>
         </div>
+        {{-- ⑤ プロフィール編集 --}}
+        <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary btn-sm w-100 mt-3 mq-btn-pill">プロフィール編集</a>
     </section>
 
     {{-- ② 獲得スタンプ --}}

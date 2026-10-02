@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BestAnswerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RankingController;
 use Illuminate\Http\Request;
@@ -56,6 +57,10 @@ Route::middleware('auth')->group(function () {
 
         // G11 マイページ
         Route::get('/mypage', [MypageController::class, 'index'])->name('mypage');
+
+        // G12 プロフィール編集
+        Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
 
         // G9 ベストアンサー評価（回答はその質問のものに限る）
         Route::post('/questions/{question}/answers/{answer}/best', [BestAnswerController::class, 'store'])
