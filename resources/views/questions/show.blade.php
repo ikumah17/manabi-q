@@ -24,7 +24,7 @@
 
     {{-- ④ ベストアンサー（★評価・スタンプ） --}}
     @if ($bestAnswer)
-        <section class="mq-best-answer mb-3" aria-label="ベストアンサー">
+        <section class="mq-best-answer mb-3" id="answer-{{ $bestAnswer->id }}" aria-label="ベストアンサー">
             <div class="d-flex align-items-center gap-2 mb-1">
                 <x-badge variant="best">ベストアンサー</x-badge>
                 <x-stars :rating="$bestAnswer->rating" />

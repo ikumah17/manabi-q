@@ -44,12 +44,6 @@
     {{-- ⑨⑩ 回答者ランキング TOP5・ランキングをもっと見る（G10 へ） --}}
     <x-ranking-top :entries="$topRankers" class="mt-3" />
 
-    {{-- 一般ユーザーのログアウトは設計上 G11（マイページ）にある。G11 の実装（Phase 6）までの確認用 --}}
-    <form method="POST" action="{{ route('logout') }}" class="mt-4">
-        @csrf
-        <button type="submit" class="btn btn-outline-danger w-100">ログアウト（G11 実装までの仮）</button>
-    </form>
-
     {{-- ⑥ 質問を投稿する --}}
     <x-slot:fab>
         <x-fab :href="route('questions.create')">質問する</x-fab>

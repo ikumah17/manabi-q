@@ -658,3 +658,123 @@
     display: inline-block;
     margin-top: .375rem;
 }
+
+// ---- マイページ（G11） ----
+
+.mq-card-title {
+    margin-bottom: .75rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+}
+
+// ① ユーザー情報（頭文字の丸アイコン）
+.mq-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mq-profile__avatar {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--mq-primary);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.mq-profile__body {
+    min-width: 0;
+}
+
+.mq-profile__name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.mq-profile__email {
+    overflow: hidden;
+    color: var(--mq-muted);
+    font-size: .875rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mq-profile__stats {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: .75rem;
+    font-size: .875rem;
+}
+
+// ② 獲得スタンプ（獲得済み：黄色、未獲得：灰色）
+.mq-stamp-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .5rem;
+}
+
+.mq-stamp-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: .75rem .25rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .5rem;
+    background: var(--mq-gray-bg);
+    color: var(--mq-muted);
+    text-align: center;
+
+    &.is-earned {
+        border-color: var(--mq-best);
+        background: var(--mq-best-bg);
+        color: var(--mq-text);
+
+        .mq-stamp-tile__icon { color: var(--mq-best); }
+    }
+}
+
+.mq-stamp-tile__icon {
+    font-size: 1.75rem;
+    line-height: 1.2;
+}
+
+.mq-stamp-tile__name {
+    font-size: .8125rem;
+    font-weight: 700;
+}
+
+.mq-stamp-tile__sub {
+    color: var(--mq-muted);
+    font-size: .6875rem;
+}
+
+// ③ タブ（自分の質問／自分の回答）
+.mq-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--mq-border);
+}
+
+.mq-tabs__item {
+    flex: 1;
+    margin-bottom: -1px;
+    padding: .625rem 0;
+    border-bottom: 3px solid transparent;
+    color: var(--mq-muted);
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+
+    &:hover { color: var(--mq-primary); }
+
+    &.is-active {
+        border-bottom-color: var(--mq-primary);
+        color: var(--mq-primary);
+    }
+}
