@@ -56,8 +56,82 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // G13 グラフ（Chart.js）：<canvas data-chart='{"type":"line|bar","labels":[...],"data":[...]}'>
+    document.querySelectorAll('canvas[data-chart]').forEach((canvas) => {
+        renderChart(canvas, JSON.parse(canvas.dataset.chart));
+    });
+
     // 入力エラーで戻ってきたときにボトムシートを開き直す：data-mq-autoshow
     document.querySelectorAll('.offcanvas[data-mq-autoshow]').forEach((sheet) => {
         bootstrap.Offcanvas.getOrCreateInstance(sheet).show();
     });
 });
+
+const CHART_PRIMARY = '#2e70d9';
+const CHART_GRID = '#d9dee8';
+const CHART_TEXT = '#6b7587';
+
+// 横棒の右に値を描く（設計画像の「420」などの数値ラベル。追加パッケージは使わない）
+const barValueLabels = {
+    id: 'mqBarValueLabels',
+    afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        ctx.save();
+        ctx.fillStyle = CHART_TEXT;
+        ctx.font = '12px system-ui, sans-serif';
+        ctx.textBaseline = 'middle';
+        chart.getDatasetMeta(0).data.forEach((bar, index) => {
+            ctx.fillText(String(chart.data.datasets[0].data[index]), bar.x + 8, bar.y);
+        });
+        ctx.restore();
+    },
+};
+
+function renderChart(canvas, { type, labels, data }) {
+    const common = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+    };
+
+    if (type === 'line') {
+        return new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    data,
+                    borderColor: CHART_PRIMARY,
+                    backgroundColor: '#ffffff',
+                    pointBorderColor: CHART_PRIMARY,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    tension: 0,
+                }],
+            },
+            options: {
+                ...common,
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: CHART_TEXT } },
+                    y: { beginAtZero: true, grid: { color: CHART_GRID }, border: { display: false }, ticks: { color: CHART_TEXT, precision: 0 } },
+                },
+            },
+        });
+    }
+
+    return new Chart(canvas, {
+        type: 'bar',
+        data: { labels, datasets: [{ data, backgroundColor: CHART_PRIMARY, barThickness: 18, borderRadius: 2 }] },
+        options: {
+            ...common,
+            indexAxis: 'y',
+            layout: { padding: { right: 40 } },
+            scales: {
+                x: { display: false, beginAtZero: true },
+                y: { grid: { display: false }, border: { display: false }, ticks: { color: '#212633' } },
+            },
+        },
+        plugins: [barValueLabels],
+    });
+}

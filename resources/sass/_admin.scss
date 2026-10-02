@@ -155,3 +155,73 @@
     font-size: .8125rem;
     overflow-wrap: anywhere;
 }
+
+// ---- G13 ダッシュボード ----
+
+// ② 集計サマリー（5枚のカード）
+.mq-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+.mq-stat-card {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .5rem;
+    background: #fff;
+}
+
+.mq-stat-card__label {
+    margin-bottom: .25rem;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+}
+
+.mq-stat-card__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    &.is-alert { color: var(--mq-danger); }
+}
+
+.mq-stat-card__unit {
+    margin-left: .25rem;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+    font-weight: 400;
+}
+
+.mq-panel-title {
+    margin-bottom: .75rem;
+    font-size: .9375rem;
+    font-weight: 700;
+}
+
+.mq-chart {
+    position: relative;
+    height: 220px;
+}
+
+// ⑤ 最近の投稿
+.mq-recent-post {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .25rem 0;
+}
+
+.mq-recent-post__content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mq-recent-post__meta {
+    color: var(--mq-muted);
+    font-size: .75rem;
+    white-space: nowrap;
+}
