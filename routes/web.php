@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AiAnswerController;
@@ -84,6 +85,9 @@ Route::middleware('auth')->group(function () {
     // 管理者画面（一般ユーザーは 403）
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        // G14 投稿管理
+        Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
 
         // G15 ユーザー管理（削除は無し）
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
