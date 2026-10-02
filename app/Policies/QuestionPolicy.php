@@ -28,6 +28,20 @@ class QuestionPolicy
     }
 
     /**
+     * G7 ⑨・G17 質問の通報：非表示の質問は 404、自分の質問は 403
+     */
+    public function report(User $user, Question $question): Response
+    {
+        if (! $question->isPublished()) {
+            return Response::denyAsNotFound();
+        }
+
+        return $question->user_id === $user->id
+            ? Response::deny()
+            : Response::allow();
+    }
+
+    /**
      * G6・G7 ③ AI回答の再試行：質問者本人・AI回答を希望・まだAI回答が無い場合のみ
      * （非表示の質問は view() で 404 にする）
      */
