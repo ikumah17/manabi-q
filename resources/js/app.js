@@ -14,6 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 二重送信の防止：<form data-submit-once>（送信後はボタンを押せなくする）
+    document.querySelectorAll('form[data-submit-once]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (event.defaultPrevented) {
+                return;
+            }
+            form.querySelectorAll('button[type="submit"]').forEach((button) => {
+                button.disabled = true;
+            });
+        });
+    });
+
+    // G9 星評価：選んだ数を「評価：n / 5」に表示し、選ぶまで「決定する」を押せなくする
+    document.querySelectorAll('[data-rating]').forEach((fieldset) => {
+        const form = fieldset.closest('form');
+        const value = fieldset.querySelector('[data-rating-value]');
+        const submit = form.querySelector('[data-rating-submit]');
+        const update = () => {
+            const checked = fieldset.querySelector('input[name="rating"]:checked');
+            value.textContent = `評価：${checked ? checked.value : '−'} / 5`;
+            submit.disabled = !checked;
+        };
+        fieldset.addEventListener('change', update);
+        update();
+    });
+
     // 入力エラーで戻ってきたときにボトムシートを開き直す：data-mq-autoshow
     document.querySelectorAll('.offcanvas[data-mq-autoshow]').forEach((sheet) => {
         bootstrap.Offcanvas.getOrCreateInstance(sheet).show();
