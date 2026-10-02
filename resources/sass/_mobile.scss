@@ -262,7 +262,7 @@
 .mq-stack {
     display: flex;
     flex-direction: column;
-    gap: .75rem;
+    gap: var(--mq-space-3);
 }
 
 .mq-empty {
@@ -274,8 +274,8 @@
 .mq-badges {
     display: flex;
     flex-wrap: wrap;
-    gap: .25rem;
-    margin-bottom: .375rem;
+    gap: 6px;
+    margin-bottom: var(--mq-space-2);
 }
 
 // 投稿者・日時・回答数（G4 は空白区切り、G7 は「・」区切り）
@@ -284,7 +284,7 @@
     flex-wrap: wrap;
     column-gap: .75rem;
     color: var(--mq-muted);
-    font-size: .8125rem;
+    font-size: var(--mq-fs-meta);
 }
 
 .mq-meta--dot {
@@ -301,29 +301,64 @@
     overflow-wrap: anywhere;
 }
 
-// G4 ⑦ 質問カード
+// G4 ⑦ 質問カード（タイトル → 本文抜粋 2 行 → 投稿者・日時・回答数）
 .mq-question-card {
     display: block;
     color: inherit;
     text-decoration: none;
+    transition: border-color .15s, background-color .15s;
 
-    &:hover { border-color: var(--mq-primary); color: inherit; }
+    &:hover { border-color: var(--mq-border); color: inherit; }
+    &:active { background: #fafafa; }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-focus-ring); }
 }
 
 .mq-question-card__title {
-    margin: 0 0 .125rem;
-    font-size: 1.0625rem;
-    font-weight: 700;
-    line-height: 1.45;
+    margin: 0 0 var(--mq-space-1);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
 }
 
 .mq-question-card__excerpt {
-    margin: 0 0 .25rem;
+    display: -webkit-box;
+    margin: 0 0 var(--mq-space-2);
     overflow: hidden;
     color: var(--mq-muted);
-    font-size: .8125rem;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    font-size: .875rem;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+// G4 ②〜⑤ 検索条件（虫眼鏡付きの検索欄・軽いセレクト）
+.mq-home-search {
+    margin-bottom: var(--mq-space-5);
+}
+
+.mq-search {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.mq-search__icon {
+    position: absolute;
+    top: 50%;
+    left: .75rem;
+    color: var(--mq-muted);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+// 背景は白（プレースホルダー #767676 を 4.5:1 以上に保つため）
+.mq-search__input {
+    padding-left: 2.375rem;
+}
+
+.mq-filters .form-select {
+    font-size: .875rem;
 }
 
 // G6 ②・G7 ① 質問タイトル
@@ -651,24 +686,37 @@
     font-size: .6875rem;
 }
 
-// G4 ⑨ 回答者ランキング TOP5
+// G4 ⑨ 回答者ランキング TOP5（1行ごとに細い区切り線）
 .mq-ranking-top__title {
-    margin-bottom: .5rem;
-    font-size: 1rem;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--mq-space-2);
+    margin-bottom: var(--mq-space-2);
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
+}
+
+.mq-ranking-top__icon {
+    width: 1.375rem;
+    height: 1.375rem;
+    color: var(--mq-best);
 }
 
 .mq-ranking-top__row {
     display: flex;
-    gap: .75rem;
-    padding: .125rem 0;
+    align-items: baseline;
+    gap: var(--mq-space-3);
+    padding: .625rem 0;
+    border-top: 1px solid var(--mq-hairline);
+    font-size: var(--mq-fs-body);
 }
 
 .mq-ranking-top__rank {
     min-width: 2.25rem;
-    font-weight: 700;
+    color: var(--mq-muted);
+    font-weight: 600;
 
-    &.is-first { color: var(--mq-best); }
+    &.is-first { color: var(--mq-best-text); }
 }
 
 .mq-ranking-top__name {
@@ -681,12 +729,32 @@
 
 .mq-ranking-top__count {
     color: var(--mq-muted);
-    font-size: .875rem;
+    font-size: var(--mq-fs-sub);
 }
 
+.mq-ranking-top__empty {
+    margin: 0;
+    padding: .625rem 0;
+    border-top: 1px solid var(--mq-hairline);
+    color: var(--mq-muted);
+    font-size: var(--mq-fs-sub);
+}
+
+// 単独のリンクなので下線は付けず、右向きの矢印で示す（タップ領域 44px）
 .mq-ranking-top__more {
-    display: inline-block;
-    margin-top: .375rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2.75rem;
+    margin-bottom: -.5rem;
+    border-top: 1px solid var(--mq-hairline);
+    color: var(--mq-primary);
+    font-size: var(--mq-fs-body);
+    text-decoration: none;
+
+    .mq-icon { color: var(--mq-muted); }
+
+    &:hover { color: var(--mq-primary); text-decoration: underline; }
 }
 
 // ---- マイページ（G11） ----
