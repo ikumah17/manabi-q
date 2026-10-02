@@ -65,7 +65,8 @@ class QuestionController extends Controller
             ->with(['user', 'stamp'])
             ->oldest()
             ->orderBy('id')
-            ->get();
+            ->get()
+            ->each(fn ($answer) => $answer->setRelation('question', $question)); // 権限の判定で質問を再取得しない
 
         return view('questions.show', [
             'question' => $question,

@@ -778,3 +778,24 @@
         color: var(--mq-primary);
     }
 }
+
+// ---- 通報（G7 ⑨・G17） ----
+
+// 投稿の下の操作（左：ベストアンサーに選ぶ、右：通報）
+.mq-post-actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .5rem;
+}
+
+.mq-report-button {
+    padding: .125rem .625rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .375rem;
+    background: #fff;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+
+    &:hover { border-color: var(--mq-muted); color: var(--mq-text); }
+}

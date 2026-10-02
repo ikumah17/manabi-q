@@ -16,7 +16,12 @@
             <span>回答 {{ $answerCount }}件</span>
         </div>
         <div class="mq-text">{{ $question->body }}</div>
-        {{-- ⑨ 通報：Phase 7 で G17 と合わせて実装 --}}
+        {{-- ⑨ 通報する（自分の投稿には出さない） --}}
+        @can('report', $question)
+            <div class="mq-post-actions">
+                <x-report-button sheet="report-sheet-question" class="ms-auto" />
+            </div>
+        @endcan
     </article>
 
     {{-- ③ AI回答（ある場合のみ。取得できなかった場合は質問者本人にだけその旨） --}}
@@ -37,6 +42,11 @@
             @if ($bestAnswer->stamp)
                 <x-stamp-chip :stamp="$bestAnswer->stamp" class="mt-2" />
             @endif
+            @can('report', $bestAnswer)
+                <div class="mq-post-actions">
+                    <x-report-button :sheet="'report-sheet-answer-'.$bestAnswer->id" class="ms-auto" />
+                </div>
+            @endcan
         </section>
     @endif
 
@@ -54,13 +64,19 @@
                     <x-stamp-chip :stamp="$answer->stamp" class="mt-2" />
                 @endif
 
-                {{-- ⑥ ベストアンサーに選ぶ（質問者本人かつ未解決のときのみ。自分の回答は除く） --}}
-                @can('chooseBest', [$question, $answer])
-                    <div class="mt-2">
-                        <button type="button" class="btn btn-outline-primary btn-sm mq-btn-pill"
-                                data-bs-toggle="offcanvas" data-bs-target="#best-sheet-{{ $answer->id }}">ベストアンサーに選ぶ</button>
+                @if (Gate::allows('chooseBest', [$question, $answer]) || Gate::allows('report', $answer))
+                    <div class="mq-post-actions">
+                        {{-- ⑥ ベストアンサーに選ぶ（質問者本人かつ未解決のときのみ。自分の回答は除く） --}}
+                        @can('chooseBest', [$question, $answer])
+                            <button type="button" class="btn btn-outline-primary btn-sm mq-btn-pill"
+                                    data-bs-toggle="offcanvas" data-bs-target="#best-sheet-{{ $answer->id }}">ベストアンサーに選ぶ</button>
+                        @endcan
+                        {{-- ⑨ 通報する（自分の回答には出さない） --}}
+                        @can('report', $answer)
+                            <x-report-button :sheet="'report-sheet-answer-'.$answer->id" class="ms-auto" />
+                        @endcan
                     </div>
-                @endcan
+                @endif
             </article>
         @empty
             <p class="mq-empty">まだ回答はありません</p>
@@ -72,8 +88,20 @@
         <x-fab :href="route('answers.create', $question)" icon="✎">回答する</x-fab>
     </x-slot:fab>
 
-    {{-- G9 ベストアンサー評価（回答ごとのボトムシート） --}}
     <x-slot:sheets>
+        {{-- G17 通報（質問・各回答ごとのボトムシート。自分の投稿は除く） --}}
+        @can('report', $question)
+            <x-report-sheet id="report-sheet-question" sheet-key="question" label="質問"
+                            :action="route('reports.question', $question)" :post="$question" />
+        @endcan
+        @foreach (collect([$bestAnswer])->filter()->concat($answers) as $answer)
+            @can('report', $answer)
+                <x-report-sheet :id="'report-sheet-answer-'.$answer->id" :sheet-key="'answer-'.$answer->id" label="回答"
+                                :action="route('reports.answer', [$question, $answer])" :post="$answer" />
+            @endcan
+        @endforeach
+
+        {{-- G9 ベストアンサー評価（回答ごとのボトムシート） --}}
         @foreach ($answers as $answer)
             @can('chooseBest', [$question, $answer])
                 <x-bottom-sheet :id="'best-sheet-'.$answer->id" title="ベストアンサーを評価する"
