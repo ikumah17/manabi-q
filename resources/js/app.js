@@ -56,6 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // G16 行内編集：編集／キャンセルで行の表示と入力欄を切り替える
+    document.querySelectorAll('[data-edit-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+            const row = button.closest('[data-edit-row]');
+            row.classList.toggle('is-editing');
+            if (row.classList.contains('is-editing')) {
+                row.querySelector('.mq-edit-row__field[name="name"]')?.focus();
+            }
+        });
+    });
+
     // G13 グラフ（Chart.js）：<canvas data-chart='{"type":"line|bar","labels":[...],"data":[...]}'>
     document.querySelectorAll('canvas[data-chart]').forEach((canvas) => {
         renderChart(canvas, JSON.parse(canvas.dataset.chart));

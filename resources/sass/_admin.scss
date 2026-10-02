@@ -225,3 +225,19 @@
     font-size: .75rem;
     white-space: nowrap;
 }
+
+// ---- G16 カテゴリ管理 ----
+
+.mq-field-lg { width: 22rem; }
+.mq-field-xs { width: 5.5rem; }
+
+// 行内編集：通常は表示用、編集中は入力欄を出す
+.mq-edit-row {
+    .mq-edit-row__field { display: none; }
+
+    &.is-editing {
+        .mq-edit-row__view { display: none; }
+        .mq-edit-row__field { display: inline-block; }
+        input.mq-edit-row__field { display: block; }
+    }
+}

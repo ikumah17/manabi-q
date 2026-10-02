@@ -2,13 +2,17 @@
     確認モーダル（ブラウザ標準の confirm() の代わり。G18 対象を非表示 など）
     開くボタンには data-bs-toggle="modal" data-bs-target="#{id}" と、
     data-confirm-action（送信先 URL）・data-confirm-message（対象の内容。テキストとして表示）を付ける
+    method : 送信する HTTP メソッド（DELETE など）
 --}}
-@props(['id', 'title', 'description', 'confirmLabel', 'confirmClass' => 'btn-danger'])
+@props(['id', 'title', 'description', 'confirmLabel', 'confirmClass' => 'btn-danger', 'method' => 'POST'])
 <div class="modal fade mq-confirm-modal" id="{{ $id }}" tabindex="-1" aria-labelledby="{{ $id }}-title" aria-hidden="true" data-confirm-modal>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form method="POST" action="" data-confirm-form>
                 @csrf
+                @if (strtoupper($method) !== 'POST')
+                    @method($method)
+                @endif
                 <div class="modal-header">
                     <h2 class="modal-title fs-6 fw-bold" id="{{ $id }}-title">{{ $title }}</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
