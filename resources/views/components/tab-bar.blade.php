@@ -2,10 +2,10 @@
 @props(['active' => null])
 @php
     $items = [
-        'home' => ['label' => 'ホーム', 'icon' => '◆', 'route' => 'home'],
-        'ask' => ['label' => '質問する', 'icon' => '＋', 'route' => 'questions.create'],
-        'ranking' => ['label' => 'ランキング', 'icon' => '★', 'route' => 'ranking'],
-        'mypage' => ['label' => 'マイページ', 'icon' => '●', 'route' => 'mypage'],
+        'home' => ['label' => 'ホーム', 'icon' => 'home', 'route' => 'home'],
+        'ask' => ['label' => '質問する', 'icon' => 'square-plus', 'route' => 'questions.create'],
+        'ranking' => ['label' => 'ランキング', 'icon' => 'trophy', 'route' => 'ranking'],
+        'mypage' => ['label' => 'マイページ', 'icon' => 'person', 'route' => 'mypage'],
     ];
 @endphp
 <nav class="mq-tabbar" aria-label="メインメニュー">
@@ -13,7 +13,7 @@
         <a href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}"
            @class(['mq-tabbar__item', 'is-active' => $active === $key])
            @if ($active === $key) aria-current="page" @endif>
-            <span class="mq-tabbar__icon" aria-hidden="true">{{ $item['icon'] }}</span>
+            <x-icon :name="$item['icon']" class="mq-tabbar__icon" />
             <span>{{ $item['label'] }}</span>
         </a>
     @endforeach

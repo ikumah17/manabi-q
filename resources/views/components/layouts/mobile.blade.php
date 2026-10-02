@@ -2,7 +2,7 @@
     一般ユーザー画面の共通レイアウト（スマートフォン向け・390px 基準）
     - header : ヘッダーの表示名（既定は「まなびQ」）
     - title  : ブラウザのタブに出すページ名（既定は header）
-    - back   : 左上の ‹ の戻り先 URL（null なら表示しない）
+    - back   : 左上の戻るボタン（<）の戻り先 URL（null なら表示しない）
     - tab    : 下部タブで選択中の項目（home / ask / ranking / mypage。null ならタブを出さない）
     - スロット fab    : フローティングボタン
     - スロット sheets : ボトムシート（G9・G17）
@@ -22,7 +22,7 @@
     <div @class(['mq-app', 'mq-app--with-tabbar' => $tab])>
         <header class="mq-header">
             @if ($back)
-                <a href="{{ $back }}" class="mq-header__back" aria-label="戻る">‹</a>
+                <a href="{{ $back }}" class="mq-header__back" aria-label="戻る"><x-icon name="chevron-left" /></a>
             @endif
             <div class="mq-header__title">{{ $header }}</div>
         </header>

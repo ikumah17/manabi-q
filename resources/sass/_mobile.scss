@@ -8,40 +8,61 @@
     background: var(--mq-bg);
 }
 
-// ヘッダー（青帯・タイトル・左上の ‹）
+// 半透明＋背景ぼかし（非対応のブラウザでは単色の白）
+@mixin mq-translucent-bar {
+    background: #fff;
+
+    @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+        background: rgba(255, 255, 255, .82);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+    }
+}
+
+// ヘッダー（白・細い線・タイトルは濃いグレー・左上に戻る）
 .mq-header {
     position: sticky;
     top: 0;
     z-index: 1020;
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: var(--mq-space-1);
     height: var(--mq-header-height);
-    padding: 0 1rem;
-    background: var(--mq-primary);
-    color: #fff;
+    padding: 0 var(--mq-gutter);
+    border-bottom: 1px solid var(--mq-hairline);
+    color: var(--mq-text);
+
+    @include mq-translucent-bar;
 }
 
+// 戻る（タップ領域 44px。アイコンは左端にそろえる）
 .mq-header__back {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 2rem;
-    color: #fff;
-    font-size: 1.75rem;
-    line-height: 1;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-left: -.875rem;
+    border-radius: var(--mq-radius-sm);
+    color: var(--mq-primary);
     text-decoration: none;
 
-    &:hover, &:focus { color: #fff; }
+    .mq-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    &:hover { background: rgba(0, 0, 0, .04); color: var(--mq-primary); }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-focus-ring); }
 }
 
 .mq-header__title {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    white-space: nowrap;
     overflow: hidden;
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
+    white-space: nowrap;
     text-overflow: ellipsis;
 }
 
@@ -51,10 +72,10 @@
 
 // 下部タブ・フローティングボタンと重ならないよう余白を取る
 .mq-app--with-tabbar .mq-main {
-    padding-bottom: calc(var(--mq-tabbar-height) + 5.5rem + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--mq-tabbar-height) + 6rem + env(safe-area-inset-bottom));
 }
 
-// 下部タブメニュー（画面下部に固定）
+// 下部タブメニュー（画面下部に固定。iPhone のホームバー分の余白を足す）
 .mq-tabbar {
     position: fixed;
     right: 0;
@@ -65,68 +86,66 @@
     max-width: var(--mq-mobile-width);
     height: calc(var(--mq-tabbar-height) + env(safe-area-inset-bottom));
     margin: 0 auto;
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid var(--mq-border);
-    background: #fff;
+    padding: 0 var(--mq-space-2) env(safe-area-inset-bottom);
+    border-top: 1px solid var(--mq-hairline);
+
+    @include mq-translucent-bar;
 }
 
+// 各項目は高さ 56px・幅は 1/4 で、タップ領域 44px 以上
 .mq-tabbar__item {
     display: flex;
     flex: 1;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: .25rem;
+    gap: 2px;
+    min-height: 2.75rem;
+    border-radius: var(--mq-radius-sm);
     color: var(--mq-muted);
-    font-size: .6875rem;
+    font-size: var(--mq-fs-meta);
+    line-height: 1.2;
     text-decoration: none;
 
-    &:hover { color: var(--mq-primary); }
+    &:hover { color: var(--mq-text); }
+    &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--mq-accent); }
 
+    // 選択中：アイコンは #007AFF（文字以外）、ラベルは #0066CC（文字）
     &.is-active {
         color: var(--mq-primary);
-        font-weight: 700;
+        font-weight: 600;
 
-        .mq-tabbar__icon {
-            background: var(--mq-primary);
-            color: #fff;
-        }
+        .mq-tabbar__icon { color: var(--mq-accent); }
     }
 }
 
 .mq-tabbar__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: .375rem;
-    background: var(--mq-gray-bg);
-    color: var(--mq-muted);
-    font-size: .875rem;
-    line-height: 1;
 }
 
-// フローティングボタン（画面右下に固定）
+// フローティングボタン（右下。下部タブとホームバーの上に 16px 空けて置く）
 .mq-fab {
     position: fixed;
-    right: max(1rem, calc((100vw - var(--mq-mobile-width)) / 2 + 1rem));
-    bottom: calc(var(--mq-tabbar-height) + 1rem + env(safe-area-inset-bottom));
+    right: max(var(--mq-gutter), calc((100vw - var(--mq-mobile-width)) / 2 + var(--mq-gutter)));
+    bottom: calc(var(--mq-tabbar-height) + var(--mq-space-4) + env(safe-area-inset-bottom));
     z-index: 1025;
     display: inline-flex;
     align-items: center;
-    gap: .375rem;
-    padding: .625rem 1.375rem;
+    gap: var(--mq-space-2);
+    height: 3rem;
+    padding: 0 1.25rem 0 1rem;
     border: 0;
-    border-radius: 999px;
+    border-radius: 14px;
     background: var(--mq-primary);
-    box-shadow: 0 4px 12px rgba(46, 112, 217, .35);
+    box-shadow: var(--mq-shadow-fab);
     color: #fff;
-    font-size: 1.0625rem;
-    font-weight: 700;
+    font-size: var(--mq-fs-body);
+    font-weight: 600;
     text-decoration: none;
 
-    &:hover, &:focus { background: #2862c0; color: #fff; }
+    &:hover { background: #0058b0; color: #fff; }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-shadow-fab), var(--mq-focus-ring); color: #fff; }
 }
 
 // カード（質問一覧・質問詳細など）：白い面＋薄い線。影はごく薄く

@@ -1,5 +1,13 @@
 // 一般画面・管理画面の共通部品
 
+// アイコン（<x-icon>：インライン SVG。線幅 1.75・currentColor・既定 20px）
+.mq-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: -.25em;
+}
+
 // バッジ（カテゴリ・状態・種別）：薄い背景＋濃い文字
 .mq-badge {
     display: inline-block;
