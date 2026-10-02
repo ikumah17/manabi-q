@@ -1,0 +1,127 @@
+// 管理者画面（PC 向け・幅 1280px 基準）
+
+.mq-admin {
+    min-width: 1024px;
+    font-size: .875rem;
+}
+
+// ヘッダー（濃紺帯・管理メニュー・右上のログアウト）
+.mq-admin-header {
+    display: flex;
+    align-items: center;
+    height: 58px;
+    padding: 0 2rem;
+    background: var(--mq-admin-header);
+    color: #fff;
+}
+
+.mq-admin-header__brand {
+    margin-right: 1.75rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.mq-admin-nav {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+        color: #fff;
+        font-size: .875rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+
+        &:hover { text-decoration: underline; }
+    }
+}
+
+.mq-admin-header__user {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    margin-left: auto;
+    font-size: .8125rem;
+    white-space: nowrap;
+}
+
+.mq-admin-logout {
+    padding: .1875rem .75rem;
+    border: 1px solid #fff;
+    border-radius: .25rem;
+    background: transparent;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+
+    &:hover { background: rgba(255, 255, 255, .1); }
+}
+
+.mq-admin-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 3rem 3rem;
+}
+
+.mq-admin-title {
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+// 検索・入力欄の枠（白背景・罫線）
+.mq-panel {
+    margin-bottom: 1.25rem;
+    padding: .875rem 1rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .5rem;
+    background: #fff;
+
+    .form-label {
+        margin-bottom: .25rem;
+        font-size: .8125rem;
+    }
+
+    .form-control, .form-select {
+        padding: .5rem .75rem;
+        font-size: .8125rem;
+    }
+}
+
+// 一覧表
+.mq-table-wrap {
+    overflow: hidden;
+    border: 1px solid var(--mq-border);
+    border-radius: .5rem;
+    background: #fff;
+}
+
+.mq-table {
+    width: 100%;
+    margin: 0;
+    font-size: .8125rem;
+
+    th {
+        padding: .75rem 1rem;
+        background: var(--mq-gray-bg);
+        color: var(--mq-muted);
+        font-size: .75rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: .75rem 1rem;
+        border-top: 1px solid var(--mq-border);
+        vertical-align: middle;
+    }
+}
+
+// 表内の小さなボタン（非表示・削除・利用停止など）
+.mq-btn-xs {
+    padding: .25rem .75rem;
+    border-radius: .25rem;
+    font-size: .75rem;
+    font-weight: 700;
+}

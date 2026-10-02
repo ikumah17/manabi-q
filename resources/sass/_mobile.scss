@@ -1,0 +1,196 @@
+// 一般ユーザー画面（スマートフォン向け・幅 390px 基準）
+
+.mq-app {
+    position: relative;
+    max-width: var(--mq-mobile-width);
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--mq-bg);
+}
+
+// ヘッダー（青帯・タイトル・左上の ‹）
+.mq-header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    height: var(--mq-header-height);
+    padding: 0 1rem;
+    background: var(--mq-primary);
+    color: #fff;
+}
+
+.mq-header__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 2rem;
+    color: #fff;
+    font-size: 1.75rem;
+    line-height: 1;
+    text-decoration: none;
+
+    &:hover, &:focus { color: #fff; }
+}
+
+.mq-header__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mq-main {
+    padding: 1.25rem 1rem 2rem;
+}
+
+// 下部タブ・フローティングボタンと重ならないよう余白を取る
+.mq-app--with-tabbar .mq-main {
+    padding-bottom: calc(var(--mq-tabbar-height) + 5.5rem + env(safe-area-inset-bottom));
+}
+
+// 下部タブメニュー（画面下部に固定）
+.mq-tabbar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1030;
+    display: flex;
+    max-width: var(--mq-mobile-width);
+    height: calc(var(--mq-tabbar-height) + env(safe-area-inset-bottom));
+    margin: 0 auto;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--mq-border);
+    background: #fff;
+}
+
+.mq-tabbar__item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .25rem;
+    color: var(--mq-muted);
+    font-size: .6875rem;
+    text-decoration: none;
+
+    &:hover { color: var(--mq-primary); }
+
+    &.is-active {
+        color: var(--mq-primary);
+        font-weight: 700;
+
+        .mq-tabbar__icon {
+            background: var(--mq-primary);
+            color: #fff;
+        }
+    }
+}
+
+.mq-tabbar__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .375rem;
+    background: var(--mq-gray-bg);
+    color: var(--mq-muted);
+    font-size: .875rem;
+    line-height: 1;
+}
+
+// フローティングボタン（画面右下に固定）
+.mq-fab {
+    position: fixed;
+    right: max(1rem, calc((100vw - var(--mq-mobile-width)) / 2 + 1rem));
+    bottom: calc(var(--mq-tabbar-height) + 1rem + env(safe-area-inset-bottom));
+    z-index: 1025;
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    padding: .625rem 1.375rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--mq-primary);
+    box-shadow: 0 4px 12px rgba(46, 112, 217, .35);
+    color: #fff;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover, &:focus { background: #2862c0; color: #fff; }
+}
+
+// カード（質問一覧・質問詳細など）
+.mq-card {
+    padding: 1rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .75rem;
+    background: #fff;
+}
+
+// ページ見出し（G1「ログイン」など）
+.mq-page-title {
+    margin: 1.5rem 0 .5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.mq-page-lead {
+    margin-bottom: 1.25rem;
+    color: var(--mq-muted);
+    font-size: .875rem;
+}
+
+// フォーム（入力欄・ボタンは高さ 44px）
+.mq-mobile {
+    .form-control, .form-select {
+        border-radius: .5rem;
+    }
+
+    .btn {
+        padding-top: .625rem;
+        padding-bottom: .625rem;
+    }
+}
+
+// ボトムシート（G9・G17：G7 の上に表示）
+.mq-sheet.offcanvas-bottom {
+    right: 0;
+    left: 0;
+    height: auto;
+    max-height: 90vh;
+    max-width: var(--mq-mobile-width);
+    margin: 0 auto;
+    border-top: 0;
+    border-radius: 1.25rem 1.25rem 0 0;
+}
+
+.mq-sheet__handle {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: .3125rem;
+    margin: .625rem auto 0;
+    border-radius: 999px;
+    background: var(--mq-border);
+}
+
+.mq-sheet__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.mq-sheet__description {
+    margin: .5rem 0 0;
+    color: var(--mq-muted);
+    font-size: .8125rem;
+}

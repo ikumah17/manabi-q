@@ -1,0 +1,87 @@
+// 一般画面・管理画面の共通部品
+
+// バッジ（カテゴリ・状態・種別）
+.mq-badge {
+    display: inline-block;
+    padding: .125rem .5rem;
+    border-radius: .25rem;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    &--primary { background: var(--mq-primary-bg); color: var(--mq-primary); }
+    &--danger { background: var(--mq-danger-bg); color: var(--mq-danger); }
+    &--success { background: var(--mq-success-bg); color: var(--mq-success); }
+    &--ai { background: var(--mq-ai-bg); color: var(--mq-ai); }
+    &--muted { background: var(--mq-gray-bg); color: var(--mq-muted); }
+    &--best { background: var(--mq-best); color: #fff; }
+}
+
+// エラーメッセージ（設計書の「エラーメッセージ」欄：淡い赤の背景に赤文字）
+.mq-error {
+    padding: .75rem 1rem;
+    border-radius: .5rem;
+    background: var(--mq-danger-bg);
+    color: var(--mq-danger);
+    font-size: .9375rem;
+}
+
+// 完了メッセージ（G6 ①：淡い緑の背景に緑の太字）
+.mq-flash {
+    padding: .75rem 1rem;
+    border-radius: .5rem;
+    font-weight: 700;
+
+    &--success { background: var(--mq-success-bg); color: var(--mq-success); }
+}
+
+// ページネーション（‹ 1 2 3 ›）
+.mq-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    margin: 1rem 0;
+}
+
+.mq-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 .5rem;
+    border: 1px solid var(--mq-border);
+    border-radius: .375rem;
+    background: #fff;
+    color: var(--mq-text);
+    font-size: .9375rem;
+    text-decoration: none;
+
+    &:hover { border-color: var(--mq-primary); color: var(--mq-primary); }
+
+    &.is-active {
+        border-color: var(--mq-primary);
+        background: var(--mq-primary);
+        color: #fff;
+    }
+
+    &.is-disabled {
+        color: var(--mq-muted);
+        opacity: .5;
+        pointer-events: none;
+    }
+}
+
+.mq-pagination--admin {
+    justify-content: flex-start;
+    gap: .375rem;
+
+    .mq-page {
+        min-width: 2rem;
+        height: 2rem;
+        font-size: .8125rem;
+    }
+}

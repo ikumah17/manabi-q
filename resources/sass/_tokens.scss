@@ -1,0 +1,25 @@
+// デザイン画像から採取した色・寸法
+:root {
+    --mq-primary: #2e70d9;
+    --mq-primary-bg: #e8f0fc;
+    --mq-text: #212633;
+    --mq-muted: #6b7587;
+    --mq-border: #d9dee8;
+    --mq-bg: #f5f7fc;
+    --mq-gray-bg: #edf0f5;
+    --mq-danger: #db3333;
+    --mq-danger-bg: #fcebeb;
+    --mq-success: #29995c;
+    --mq-success-bg: #e5f7eb;
+    --mq-ai: #734cd9;
+    --mq-ai-bg: #f2edff;
+    --mq-best: #f5a624;
+    --mq-best-bg: #fff7e0;
+    --mq-best-text: #b2730d;
+    --mq-admin-header: #293042;
+
+    // 一般画面（390px 基準。PC で開いた場合は 480px 幅で中央に表示）
+    --mq-mobile-width: 480px;
+    --mq-header-height: 56px;
+    --mq-tabbar-height: 64px;
+}
