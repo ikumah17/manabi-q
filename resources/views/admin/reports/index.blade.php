@@ -70,6 +70,19 @@
                         <td class="text-nowrap">
                             @if ($report->status === \App\Enums\ReportStatus::Resolved)
                                 <span class="text-body-secondary">対応済み（<x-admin-datetime :at="$report->updated_at" :date-only="true" />）</span>
+                            @else
+                                {{-- ⑤ 対象を非表示（確認モーダルを開く。対象が既に非表示なら出さない） --}}
+                                @unless ($targetHidden)
+                                    <button type="button" class="btn btn-danger mq-btn-xs"
+                                            data-bs-toggle="modal" data-bs-target="#hide-target-modal"
+                                            data-confirm-action="{{ route('admin.reports.hide-target', $report) }}"
+                                            data-confirm-message="{{ ($isAnswer ? '回答：' : '質問：').Str::limit($content, 80) }}">対象を非表示</button>
+                                @endunless
+                                {{-- ⑥ 対応済みにする --}}
+                                <form method="POST" action="{{ route('admin.reports.resolve', $report) }}" class="d-inline" data-submit-once>
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-primary mq-btn-xs">対応済みにする</button>
+                                </form>
                             @endif
                         </td>
                     </tr>
@@ -84,4 +97,8 @@
 
     {{-- ⑦ ページネーション（20件ごと） --}}
     {{ $reports->links('pagination.admin') }}
+
+    <x-confirm-modal id="hide-target-modal" title="対象の投稿を非表示にしますか？"
+                     description="次の投稿を非表示にし、この投稿への未対応の通報をすべて対応済みにします。"
+                     confirm-label="非表示にする" />
 </x-layouts.admin>

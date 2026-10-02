@@ -146,3 +146,12 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+// 確認モーダルの対象表示
+.mq-confirm-modal__target {
+    padding: .5rem .75rem;
+    border-radius: .375rem;
+    background: var(--mq-gray-bg);
+    font-size: .8125rem;
+    overflow-wrap: anywhere;
+}

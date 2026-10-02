@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function () {
 
         // G18 通報管理
         Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+        Route::post('/reports/{report}/hide-target', [AdminReportController::class, 'hideTarget'])->name('reports.hide-target');
+        Route::post('/reports/{report}/resolve', [AdminReportController::class, 'resolve'])->name('reports.resolve');
     });
 });
 

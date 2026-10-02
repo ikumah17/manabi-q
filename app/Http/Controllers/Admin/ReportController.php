@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\HandleReport;
 use App\Enums\ReportReason;
 use App\Enums\ReportStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -46,5 +48,33 @@ class ReportController extends Controller
             'status' => $status,
             'reason' => $reason,
         ]);
+    }
+
+    /**
+     * ⑤ 対象を非表示
+     */
+    public function hideTarget(Report $report, HandleReport $handleReport): RedirectResponse
+    {
+        return $this->back($handleReport->hideTarget($report), '対象の投稿を非表示にし、通報を対応済みにしました');
+    }
+
+    /**
+     * ⑥ 対応済みにする
+     */
+    public function resolve(Report $report, HandleReport $handleReport): RedirectResponse
+    {
+        return $this->back($handleReport->resolve($report), '通報を対応済みにしました');
+    }
+
+    /**
+     * 操作した一覧（検索条件・ページ）へ戻る。管理画面の外の URL には戻らない
+     */
+    private function back(bool $done, string $message): RedirectResponse
+    {
+        $previous = url()->previous();
+        $index = route('admin.reports.index');
+        $url = $previous === $index || str_starts_with($previous, $index.'?') ? $previous : $index;
+
+        return redirect()->to($url)->with($done ? 'success' : 'error', $done ? $message : '既に対応済みです');
     }
 }

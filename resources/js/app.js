@@ -40,6 +40,22 @@ document.addEventListener('DOMContentLoaded', () => {
         update();
     });
 
+    // 確認モーダル：開いたボタンの data-confirm-action を送信先に、data-confirm-message を本文に入れる
+    document.querySelectorAll('[data-confirm-modal]').forEach((modal) => {
+        modal.addEventListener('show.bs.modal', (event) => {
+            const trigger = event.relatedTarget;
+            if (!trigger) {
+                return;
+            }
+            modal.querySelector('[data-confirm-form]').action = trigger.dataset.confirmAction;
+            modal.querySelector('[data-confirm-target]').textContent = trigger.dataset.confirmMessage || '';
+            modal.querySelector('[data-confirm-submit]').disabled = false;
+        });
+        modal.querySelector('[data-confirm-form]').addEventListener('submit', (event) => {
+            event.submitter?.setAttribute('disabled', 'disabled');
+        });
+    });
+
     // 入力エラーで戻ってきたときにボトムシートを開き直す：data-mq-autoshow
     document.querySelectorAll('.offcanvas[data-mq-autoshow]').forEach((sheet) => {
         bootstrap.Offcanvas.getOrCreateInstance(sheet).show();
