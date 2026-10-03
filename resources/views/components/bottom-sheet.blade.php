@@ -16,13 +16,13 @@
      tabindex="-1" id="{{ $id }}" aria-labelledby="{{ $id }}-title"
      @if ($open) data-mq-autoshow @endif>
     <div class="mq-sheet__handle" aria-hidden="true"></div>
-    <div class="offcanvas-header d-block pb-0">
+    <div class="offcanvas-header d-block">
         <h2 class="mq-sheet__title" id="{{ $id }}-title">{{ $title }}</h2>
         @if ($description)
             <p class="mq-sheet__description">{{ $description }}</p>
         @endif
     </div>
-    <div class="offcanvas-body pt-3">
+    <div class="offcanvas-body">
         {{ $slot }}
     </div>
 </div>

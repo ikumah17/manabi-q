@@ -192,7 +192,7 @@
     }
 }
 
-// ボトムシート（G9・G17：G7 の上に表示）
+// ボトムシート（G9・G17：G7 の上に表示。角丸 20px・背景は黒 35%）
 .mq-sheet.offcanvas-bottom {
     right: 0;
     left: 0;
@@ -200,29 +200,33 @@
     max-height: 90vh;
     max-width: var(--mq-mobile-width);
     margin: 0 auto;
+    padding-bottom: env(safe-area-inset-bottom);
     border-top: 0;
-    border-radius: 1.25rem 1.25rem 0 0;
+    border-radius: var(--mq-radius-lg) var(--mq-radius-lg) 0 0;
+
+    .offcanvas-header { padding: var(--mq-space-4) var(--mq-gutter) 0; }
+    .offcanvas-body { padding: var(--mq-space-5) var(--mq-gutter) var(--mq-space-6); }
 }
 
 .mq-sheet__handle {
     flex-shrink: 0;
-    width: 2.5rem;
+    width: 2.25rem;
     height: .3125rem;
-    margin: .625rem auto 0;
+    margin: .5rem auto 0;
     border-radius: 999px;
     background: var(--mq-border);
 }
 
 .mq-sheet__title {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.1875rem;
+    font-weight: 600;
 }
 
 .mq-sheet__description {
-    margin: .5rem 0 0;
+    margin: var(--mq-space-2) 0 0;
     color: var(--mq-muted);
-    font-size: .8125rem;
+    font-size: var(--mq-fs-sub);
 }
 
 // 完了画面（G3：緑の丸にチェック・見出し・説明文）
@@ -883,17 +887,53 @@
 .mq-post-actions {
     display: flex;
     align-items: center;
-    gap: .5rem;
-    margin-top: .5rem;
+    gap: var(--mq-space-2);
+    margin-top: var(--mq-space-2);
 }
 
+// 通報：枠なしの控えめなボタン（旗のアイコン＋文字。タップ領域 44px）
 .mq-report-button {
-    padding: .125rem .625rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .375rem;
-    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--mq-space-1);
+    min-height: 2.75rem;
+    margin-right: -.5rem;
+    padding: 0 .5rem;
+    border: 0;
+    border-radius: var(--mq-radius-sm);
+    background: transparent;
     color: var(--mq-muted);
-    font-size: .8125rem;
+    font-size: var(--mq-fs-sub);
 
-    &:hover { border-color: var(--mq-muted); color: var(--mq-text); }
+    .mq-icon { width: 1rem; height: 1rem; }
+
+    &:hover { background: rgba(0, 0, 0, .04); color: var(--mq-text); }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-focus-ring); }
+}
+
+// G17 通報理由：1行ずつ区切った選択肢（行全体がタップ領域 44px）
+.mq-sheet .form-check {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--mq-hairline);
+
+    &:last-of-type { border-bottom: 0; }
+
+    .form-check-input {
+        flex-shrink: 0;
+        float: none;
+        margin: 0 var(--mq-space-3) 0 0;
+    }
+
+    .form-check-label {
+        flex: 1;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        font-size: var(--mq-fs-body);
+        cursor: pointer;
+    }
 }

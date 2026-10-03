@@ -36,8 +36,11 @@
     font-size: var(--mq-fs-sub);
 }
 
-// 完了メッセージ（淡い緑の背景に濃い緑の文字）
+// 完了メッセージ（淡い緑の背景に濃い緑の文字＋チェックのアイコン）
 .mq-flash {
+    display: flex;
+    align-items: center;
+    gap: var(--mq-space-2);
     padding: .75rem 1rem;
     border-radius: var(--mq-radius-input);
     font-size: var(--mq-fs-sub);

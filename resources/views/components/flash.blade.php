@@ -4,7 +4,7 @@
     session('error')   : 処理できなかった理由
 --}}
 @if (session('success'))
-    <div {{ $attributes->class('mq-flash mq-flash--success') }} role="status">✓ {{ session('success') }}</div>
+    <div {{ $attributes->class('mq-flash mq-flash--success') }} role="status"><x-icon name="check" />{{ session('success') }}</div>
 @endif
 @if (session('error'))
     <div {{ $attributes->class('mq-error') }} role="alert">{{ session('error') }}</div>
