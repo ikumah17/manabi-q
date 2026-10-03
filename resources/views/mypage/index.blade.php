@@ -17,6 +17,17 @@
                 </div>
             @endforeach
         </dl>
+        {{-- ① ベストアンサー評価の平均（★n.n・n件。評価が無ければ「—」） --}}
+        <dl class="d-flex justify-content-between align-items-baseline gap-2 mt-3 mb-0">
+            <dt class="mq-stat__label">ベストアンサー評価の平均</dt>
+            <dd class="mq-stat__value">
+                @if ($averageRating !== null)
+                    <span class="mq-stamp-chip__star" aria-hidden="true">★</span>{{ number_format($averageRating, 1) }}・{{ $ratedCount }}件
+                @else
+                    —
+                @endif
+            </dd>
+        </dl>
         {{-- ⑤ プロフィール編集 --}}
         <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary w-100 mt-3 mq-btn-pill">プロフィール編集</a>
     </section>

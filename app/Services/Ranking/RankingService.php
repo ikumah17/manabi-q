@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
  * - 対象：回答が1件以上ある、利用中の一般ユーザー（管理者・利用停止は除く）
  * - 順位：回答数のみで決める（同数は同順位：1, 2, 2, 4）
  * - 並び順：回答数 → ベストアンサー数 → ユーザーID
+ * - ベストアンサー評価の平均（G10 ①・G11 ①）：数える回答のうち評価の入ったベストアンサーの合計と件数から計算する（順位には使わない）
  */
 class RankingService
 {
@@ -104,13 +105,16 @@ class RankingService
                     ->select('answers.user_id')
                     ->selectRaw('COUNT(*) as answer_count')
                     ->selectRaw('SUM(CASE WHEN answers.is_best = 1 THEN 1 ELSE 0 END) as best_answer_count')
+                    // ベストアンサー評価の平均用（評価の入ったベストアンサーだけ。平均は toEntry() 側で計算する）
+                    ->selectRaw('SUM(CASE WHEN answers.is_best = 1 AND answers.rating IS NOT NULL THEN answers.rating ELSE 0 END) as rating_sum')
+                    ->selectRaw('SUM(CASE WHEN answers.is_best = 1 AND answers.rating IS NOT NULL THEN 1 ELSE 0 END) as rated_count')
                     ->groupBy('answers.user_id'),
                 'counts'
             )
             ->join('users', 'users.id', '=', 'counts.user_id')
             ->where('users.role', UserRole::User->value)
             ->where('users.status', UserStatus::Active->value)
-            ->select('counts.user_id', 'users.name', 'counts.answer_count', 'counts.best_answer_count');
+            ->select('counts.user_id', 'users.name', 'counts.answer_count', 'counts.best_answer_count', 'counts.rating_sum', 'counts.rated_count');
 
         return DB::query()
             ->fromSub($counts, 'c')
@@ -136,6 +140,8 @@ class RankingService
             answerCount: $answerCount,
             bestAnswerCount: (int) $row->best_answer_count,
             earnedStamps: $this->earnedStamps($answerCount),
+            ratingSum: (int) $row->rating_sum,
+            ratedCount: (int) $row->rated_count,
         );
     }
 }

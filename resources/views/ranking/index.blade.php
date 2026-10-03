@@ -27,6 +27,8 @@
                         <div class="mq-ranking-list__name">{{ $entry->name }}</div>
                         <div class="mq-ranking-list__sub">
                             <span>ベストアンサー {{ $entry->bestAnswerCount }}件</span>
+                            {{-- ベストアンサー評価の平均（★n.n。評価が無ければ「—」） --}}
+                            <span data-rating-average><span class="visually-hidden">ベストアンサー評価の平均 </span>@if ($entry->averageRating() !== null)<span class="mq-stamp-chip__star" aria-hidden="true">★</span>@endif{{ $entry->averageRatingText() }}</span>
                             <x-stamp-levels :stamps="$entry->earnedStamps" class="mq-stamp-levels" />
                         </div>
                     </div>

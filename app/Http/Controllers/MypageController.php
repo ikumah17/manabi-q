@@ -45,6 +45,9 @@ class MypageController extends Controller
             'answerCount' => $answerCount,
             'bestAnswerCount' => $entry?->bestAnswerCount ?? 0,
             'rank' => $entry?->rank,
+            // ① ベストアンサー評価の平均（評価が無ければ null で「—」）
+            'averageRating' => $entry?->averageRating(),
+            'ratedCount' => $entry?->ratedCount ?? 0,
             // ② 獲得スタンプ（未獲得は残りの回答数）
             'stamps' => $ranking->stamps()->map(fn (Stamp $stamp) => [
                 'stamp' => $stamp,
