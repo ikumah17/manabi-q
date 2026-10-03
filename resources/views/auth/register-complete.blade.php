@@ -1,7 +1,7 @@
 {{-- G3 会員登録完了（自動ログインせず G1 へ戻す） --}}
 <x-layouts.mobile title="会員登録完了">
     <div class="text-center mq-complete">
-        <div class="mq-complete__icon" aria-hidden="true">✓</div>
+        <div class="mq-complete__icon"><x-icon name="check" /></div>
 
         {{-- ① 完了メッセージ --}}
         <h1 class="mq-complete__title">会員登録が完了しました</h1>
@@ -9,5 +9,5 @@
     </div>
 
     {{-- ② ログイン画面へ --}}
-    <a href="{{ route('login') }}" class="btn btn-primary w-100">ログイン画面へ</a>
+    <a href="{{ route('login') }}" class="btn btn-primary w-100 mq-btn-tall">ログイン画面へ</a>
 </x-layouts.mobile>
