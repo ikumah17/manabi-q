@@ -1,61 +1,92 @@
-// 管理者画面（PC 向け・幅 1280px 基準）
+// 管理者画面（PC 向け・幅 1280px 基準）。色・角丸・影は _tokens.scss の共通トークン
 
 .mq-admin {
     min-width: 1024px;
     font-size: .875rem;
 }
 
-// ヘッダー（濃紺帯・管理メニュー・右上のログアウト）
+// ヘッダー（白・細い線。選択中のメニューは下線）
 .mq-admin-header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
     display: flex;
-    align-items: center;
-    height: 58px;
+    align-items: stretch;
+    height: 56px;
     padding: 0 2rem;
-    background: var(--mq-admin-header);
-    color: #fff;
+    border-bottom: 1px solid var(--mq-hairline);
+    background: var(--mq-surface);
+    color: var(--mq-text);
 }
 
 .mq-admin-header__brand {
-    margin-right: 1.75rem;
-    font-size: 1.375rem;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
     white-space: nowrap;
 }
 
 .mq-admin-nav {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.75rem;
 
     a {
-        color: #fff;
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: var(--mq-muted);
         font-size: .875rem;
-        font-weight: 600;
+        font-weight: 500;
         text-decoration: none;
         white-space: nowrap;
 
-        &:hover { text-decoration: underline; }
+        &:hover { color: var(--mq-text); }
+        &:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--mq-accent); border-radius: var(--mq-radius-sm); }
+
+        // 選択中：濃い文字＋下線（#0066CC・2px）
+        &[aria-current="page"] {
+            color: var(--mq-text);
+            font-weight: 600;
+
+            &::after {
+                position: absolute;
+                right: 0;
+                bottom: -1px;
+                left: 0;
+                height: 2px;
+                border-radius: 2px 2px 0 0;
+                background: var(--mq-primary);
+                content: "";
+            }
+        }
     }
 }
 
 .mq-admin-header__user {
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.25rem;
     margin-left: auto;
+    color: var(--mq-muted);
     font-size: .8125rem;
     white-space: nowrap;
 }
 
+// ログアウト：白・薄い枠の副ボタン
 .mq-admin-logout {
-    padding: .1875rem .75rem;
-    border: 1px solid #fff;
-    border-radius: .25rem;
-    background: transparent;
-    color: #fff;
-    font-size: .75rem;
-    font-weight: 700;
+    min-height: 2.25rem;
+    padding: 0 .875rem;
+    border: 1px solid var(--mq-border);
+    border-radius: var(--mq-radius-sm);
+    background: var(--mq-surface);
+    color: var(--mq-text);
+    font-size: .8125rem;
+    font-weight: 500;
 
-    &:hover { background: rgba(255, 255, 255, .1); }
+    &:hover { background: #f5f5f7; }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-focus-ring); }
 }
 
 .mq-admin-main {
@@ -65,36 +96,41 @@
 }
 
 .mq-admin-title {
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--mq-space-6);
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-// 検索・入力欄の枠（白背景・罫線）
+// 検索・入力欄の枠（白い面＋薄い線）
 .mq-panel {
-    margin-bottom: 1.25rem;
-    padding: .875rem 1rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .5rem;
-    background: #fff;
+    margin-bottom: var(--mq-space-5);
+    padding: var(--mq-space-4) var(--mq-space-5);
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
 
     .form-label {
         margin-bottom: .25rem;
+        color: var(--mq-muted);
         font-size: .8125rem;
+        font-weight: 500;
     }
 
     .form-control, .form-select {
-        padding: .5rem .75rem;
-        font-size: .8125rem;
+        padding-top: .4375rem;
+        padding-bottom: .4375rem;
+        font-size: .875rem;
     }
 }
 
-// 一覧表
+// 一覧表（白い面・見出し行は薄いグレー・行は細い線）
 .mq-table-wrap {
     overflow: hidden;
-    border: 1px solid var(--mq-border);
-    border-radius: .5rem;
-    background: #fff;
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
 }
 
 .mq-table {
@@ -104,26 +140,29 @@
 
     th {
         padding: .75rem 1rem;
-        background: var(--mq-gray-bg);
+        background: #fafafc;
         color: var(--mq-muted);
         font-size: .75rem;
-        font-weight: 700;
+        font-weight: 600;
         white-space: nowrap;
     }
 
     td {
         padding: .75rem 1rem;
-        border-top: 1px solid var(--mq-border);
+        border-top: 1px solid var(--mq-hairline);
         vertical-align: middle;
     }
+
+    tbody tr:hover td { background: #fafafc; }
 }
 
 // 表内の小さなボタン（非表示・削除・利用停止など）
 .mq-btn-xs {
+    min-height: 2rem;
     padding: .25rem .75rem;
-    border-radius: .25rem;
+    border-radius: var(--mq-radius-sm);
     font-size: .75rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 // 検索欄の幅（G18 など）
@@ -150,7 +189,7 @@
 // 確認モーダルの対象表示
 .mq-confirm-modal__target {
     padding: .5rem .75rem;
-    border-radius: .375rem;
+    border-radius: var(--mq-radius-sm);
     background: var(--mq-gray-bg);
     font-size: .8125rem;
     overflow-wrap: anywhere;
@@ -162,14 +201,15 @@
 .mq-stat-cards {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
+    gap: var(--mq-space-4);
 }
 
 .mq-stat-card {
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .5rem;
-    background: #fff;
+    padding: var(--mq-space-4) var(--mq-space-5);
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
 }
 
 .mq-stat-card__label {
@@ -180,10 +220,10 @@
 
 .mq-stat-card__value {
     font-size: 1.75rem;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.2;
 
-    &.is-alert { color: var(--mq-danger); }
+    &.is-alert { color: var(--mq-danger); }   // #C4001A（白で 6.25:1）
 }
 
 .mq-stat-card__unit {
@@ -194,9 +234,9 @@
 }
 
 .mq-panel-title {
-    margin-bottom: .75rem;
+    margin-bottom: var(--mq-space-3);
     font-size: .9375rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .mq-chart {
@@ -204,12 +244,14 @@
     height: 220px;
 }
 
-// ⑤ 最近の投稿
+// ⑤ 最近の投稿（1行ずつ細い線で区切る）
 .mq-recent-post {
     display: flex;
     align-items: center;
     gap: .75rem;
-    padding: .25rem 0;
+    padding: .5rem 0;
+
+    & + & { border-top: 1px solid var(--mq-hairline); }
 }
 
 .mq-recent-post__content {

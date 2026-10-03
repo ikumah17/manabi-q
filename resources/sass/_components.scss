@@ -55,8 +55,9 @@ a {
 }
 
 // ボタン：主ボタンは Bootstrap の btn-primary（#0066CC・白文字 5.57:1）
-// 副ボタン：白・薄い枠・濃い文字（プロフィール編集・再試行など）
-.btn-outline-primary {
+// 副ボタン：白・薄い枠・濃い文字（プロフィール編集・再試行・モーダルのキャンセルなど）
+.btn-outline-primary,
+.btn-outline-secondary {
     --bs-btn-color: var(--mq-text);
     --bs-btn-bg: #fff;
     --bs-btn-border-color: var(--mq-border);
