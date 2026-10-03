@@ -16,12 +16,22 @@
             <span>回答 {{ $answerCount }}件</span>
         </div>
         <div class="mq-text">{{ $question->body }}</div>
-        {{-- ⑨ 通報する（自分の投稿には出さない） --}}
-        @can('report', $question)
+        @if (Gate::allows('update', $question) || Gate::allows('report', $question))
             <div class="mq-post-actions">
-                <x-report-button sheet="report-sheet-question" class="ms-auto" />
+                {{-- ⑪ 編集 ⑫ 削除（自分の質問のみ） --}}
+                @can('update', $question)
+                    <div class="ms-auto d-flex gap-2">
+                        <a href="{{ route('questions.edit', $question) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
+                        <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
+                                data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-question">削除</button>
+                    </div>
+                @endcan
+                {{-- ⑨ 通報する（自分の投稿には出さない） --}}
+                @can('report', $question)
+                    <x-report-button sheet="report-sheet-question" class="ms-auto" />
+                @endcan
             </div>
-        @endcan
+        @endif
     </article>
 
     {{-- ③ AI回答（ある場合のみ。取得できなかった場合は質問者本人にだけその旨） --}}
@@ -64,12 +74,20 @@
                     <x-stamp-chip :stamp="$answer->stamp" class="mt-2" />
                 @endif
 
-                @if (Gate::allows('chooseBest', [$question, $answer]) || Gate::allows('report', $answer))
+                @if (Gate::allows('chooseBest', [$question, $answer]) || Gate::allows('report', $answer) || Gate::allows('update', $answer))
                     <div class="mq-post-actions">
                         {{-- ⑥ ベストアンサーに選ぶ（質問者本人かつ未解決のときのみ。自分の回答は除く） --}}
                         @can('chooseBest', [$question, $answer])
                             <button type="button" class="btn btn-outline-primary btn-sm mq-btn-pill"
                                     data-bs-toggle="offcanvas" data-bs-target="#best-sheet-{{ $answer->id }}">ベストアンサーに選ぶ</button>
+                        @endcan
+                        {{-- ⑪ 編集 ⑫ 削除（自分の回答のみ。ベストアンサーには出さない） --}}
+                        @can('update', $answer)
+                            <div class="ms-auto d-flex gap-2">
+                                <a href="{{ route('answers.edit', [$question, $answer]) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
+                                <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
+                                        data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-answer-{{ $answer->id }}">削除</button>
+                            </div>
                         @endcan
                         {{-- ⑨ 通報する（自分の回答には出さない） --}}
                         @can('report', $answer)
@@ -98,6 +116,26 @@
             @can('report', $answer)
                 <x-report-sheet :id="'report-sheet-answer-'.$answer->id" :sheet-key="'answer-'.$answer->id" label="回答"
                                 :action="route('reports.answer', [$question, $answer])" :post="$answer" />
+            @endcan
+        @endforeach
+
+        {{-- G21 削除確認（自分の質問・自分の回答ごとのボトムシート。ベストアンサーは除く） --}}
+        @can('delete', $question)
+            <x-delete-sheet id="delete-sheet-question" title="質問を削除しますか？"
+                            description="この質問と、ついた回答・AI回答をまとめて削除します。削除すると元に戻せません。"
+                            :action="route('questions.destroy', $question)">
+                <div class="mq-quote__label">削除する質問</div>
+                <div class="mq-quote__title">{{ $question->title }}</div>
+            </x-delete-sheet>
+        @endcan
+        @foreach ($answers as $answer)
+            @can('delete', $answer)
+                <x-delete-sheet :id="'delete-sheet-answer-'.$answer->id" title="回答を削除しますか？"
+                                description="この回答を削除します。削除すると元に戻せません。"
+                                :action="route('answers.destroy', [$question, $answer])">
+                    <div class="mq-quote__label">削除する回答</div>
+                    <div class="mq-text">{{ Str::limitChars($answer->body, 100) }}</div>
+                </x-delete-sheet>
             @endcan
         @endforeach
 

@@ -53,9 +53,36 @@ Route::middleware('auth')->group(function () {
         // G6・G7 ③ AI回答の再試行（質問者本人のみ）
         Route::post('/questions/{question}/ai-answer', [AiAnswerController::class, 'store'])->name('questions.ai-answer.retry');
 
+        // G19 質問編集・G21 質問の削除（本人のみ 403、非表示の質問は 404。削除済みの再送信は G4 へ）
+        Route::get('/questions/{question}/edit', [QuestionController::class, 'edit'])
+            ->can('update', 'question')
+            ->name('questions.edit');
+        Route::put('/questions/{question}', [QuestionController::class, 'update'])
+            ->can('update', 'question')
+            ->name('questions.update');
+        Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])
+            ->can('delete', 'question')
+            ->missing(fn () => QuestionController::missing())
+            ->name('questions.destroy');
+
         // G8 回答投稿
         Route::get('/questions/{question}/answers/create', [AnswerController::class, 'create'])->name('answers.create');
         Route::post('/questions/{question}/answers', [AnswerController::class, 'store'])->name('answers.store');
+
+        // G20 回答編集・G21 回答の削除（本人のみ 403、ベストアンサーは 403、非表示は 404。削除済みの再送信は G7／G4 へ）
+        Route::get('/questions/{question}/answers/{answer}/edit', [AnswerController::class, 'edit'])
+            ->scopeBindings()
+            ->can('update', 'answer')
+            ->name('answers.edit');
+        Route::put('/questions/{question}/answers/{answer}', [AnswerController::class, 'update'])
+            ->scopeBindings()
+            ->can('update', 'answer')
+            ->name('answers.update');
+        Route::delete('/questions/{question}/answers/{answer}', [AnswerController::class, 'destroy'])
+            ->scopeBindings()
+            ->can('delete', 'answer')
+            ->missing(fn (Request $request) => AnswerController::missing($request))
+            ->name('answers.destroy');
 
         // G17 通報（自分の投稿は 403、非表示の投稿は 404）
         Route::post('/questions/{question}/reports', [ReportController::class, 'storeForQuestion'])

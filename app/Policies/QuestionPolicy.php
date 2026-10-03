@@ -42,6 +42,28 @@ class QuestionPolicy
     }
 
     /**
+     * G7 ⑪・G19 質問の編集：質問者本人のみ（403）。非表示の質問は 404。解決済みの質問も編集できる
+     */
+    public function update(User $user, Question $question): Response
+    {
+        if (! $question->isPublished()) {
+            return Response::denyAsNotFound();
+        }
+
+        return $question->user_id === $user->id
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * G7 ⑫・G21 質問の削除：編集と同じ条件（解決済み・回答が付いた質問も削除できる）
+     */
+    public function delete(User $user, Question $question): Response
+    {
+        return $this->update($user, $question);
+    }
+
+    /**
      * G6・G7 ③ AI回答の再試行：質問者本人・AI回答を希望・まだAI回答が無い場合のみ
      * （非表示の質問は view() で 404 にする）
      */
