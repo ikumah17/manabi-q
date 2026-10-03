@@ -830,16 +830,16 @@
 // ---- マイページ（G11） ----
 
 .mq-card-title {
-    margin-bottom: .75rem;
-    font-size: 1.0625rem;
-    font-weight: 700;
+    margin-bottom: var(--mq-space-3);
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
 }
 
-// ① ユーザー情報（頭文字の丸アイコン）
+// ① ユーザー情報（円形のアバター・名前を最も大きく・メールは小さく）
 .mq-profile {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--mq-space-4);
 }
 
 .mq-profile__avatar {
@@ -850,10 +850,10 @@
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-    background: var(--mq-primary);
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
+    background: var(--mq-primary-bg);
+    color: var(--mq-primary);        // #EBF3FE の上で 4.98:1
+    font-size: 1.375rem;
+    font-weight: 600;
 }
 
 .mq-profile__body {
@@ -861,61 +861,102 @@
 }
 
 .mq-profile__name {
+    overflow: hidden;
     font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.3;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .mq-profile__email {
     overflow: hidden;
     color: var(--mq-muted);
-    font-size: .875rem;
+    font-size: var(--mq-fs-sub);
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.mq-profile__stats {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: .75rem;
-    font-size: .875rem;
+// 統計（質問・回答・BA・順位）：横並び。HTML は「ラベル 値」の順、見た目は値を上に出す
+.mq-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: var(--mq-space-4) 0 0;
+    padding: var(--mq-space-3) 0;
+    border-top: 1px solid var(--mq-hairline);
+    border-bottom: 1px solid var(--mq-hairline);
 }
 
-// ② 獲得スタンプ（獲得済み：黄色、未獲得：灰色）
+.mq-stat {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 2px;
+
+    & + & { border-left: 1px solid var(--mq-hairline); }
+}
+
+.mq-stat__label {
+    color: var(--mq-muted);
+    font-size: var(--mq-fs-meta);
+    font-weight: 400;
+}
+
+.mq-stat__value {
+    margin: 0;
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+// ② 獲得スタンプ（アイコン・名前・達成状況・進み具合の棒）
 .mq-stamp-tiles {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: .5rem;
+    gap: var(--mq-space-2);
 }
 
 .mq-stamp-tile {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: .75rem .25rem;
-    border: 1px solid var(--mq-border);
-    border-radius: .5rem;
-    background: var(--mq-gray-bg);
-    color: var(--mq-muted);
+    gap: 2px;
+    padding: var(--mq-space-3) var(--mq-space-2);
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-btn);
+    background: var(--mq-surface);
+    color: var(--mq-text);
     text-align: center;
 
     &.is-earned {
-        border-color: var(--mq-best);
+        border-color: #f6dfbd;
         background: var(--mq-best-bg);
-        color: var(--mq-text);
-
-        .mq-stamp-tile__icon { color: var(--mq-best); }
     }
 }
 
+// 獲得済みは★（文字のまま。#C77700）、未獲得は鍵の SVG（グレー）
 .mq-stamp-tile__icon {
-    font-size: 1.75rem;
-    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: var(--mq-space-1);
+    border-radius: 50%;
+    background: var(--mq-gray-bg);
+    color: var(--mq-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+
+    .is-earned & {
+        background: #fff;
+        color: var(--mq-star);
+    }
 }
 
 .mq-stamp-tile__name {
-    font-size: .8125rem;
-    font-weight: 700;
+    font-size: var(--mq-fs-meta);
+    font-weight: 600;
 }
 
 .mq-stamp-tile__sub {
@@ -923,27 +964,54 @@
     font-size: .6875rem;
 }
 
-// ③ タブ（自分の質問／自分の回答）
+.mq-stamp-tile__bar {
+    width: 80%;
+    height: 4px;
+    margin-top: var(--mq-space-1);
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--mq-gray-bg);
+
+    > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--mq-accent);
+    }
+
+    .is-earned & { background: #fde7c6; }
+    .is-earned & > span { background: var(--mq-star); }
+}
+
+// ③ タブ（自分の質問／自分の回答）：セグメント。選択中は白い面
 .mq-tabs {
     display: flex;
-    border-bottom: 1px solid var(--mq-border);
+    gap: 2px;
+    padding: 2px;
+    border-radius: var(--mq-radius-btn);
+    background: var(--mq-segment-bg);
 }
 
 .mq-tabs__item {
+    display: flex;
     flex: 1;
-    margin-bottom: -1px;
-    padding: .625rem 0;
-    border-bottom: 3px solid transparent;
-    color: var(--mq-muted);
-    font-weight: 700;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    border-radius: 10px;
+    color: #3a3a3c;                  // #E9E9EE の上で 9.38:1
+    font-size: .875rem;
+    font-weight: 500;
     text-decoration: none;
 
-    &:hover { color: var(--mq-primary); }
+    &:hover { color: var(--mq-text); }
+    &:focus-visible { outline: 0; box-shadow: var(--mq-focus-ring); }
 
     &.is-active {
-        border-bottom-color: var(--mq-primary);
-        color: var(--mq-primary);
+        background: var(--mq-surface);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+        color: var(--mq-text);
+        font-weight: 600;
     }
 }
 

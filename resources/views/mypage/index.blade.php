@@ -1,33 +1,41 @@
 {{-- G11 マイページ --}}
 <x-layouts.mobile header="マイページ" tab="mypage">
-    {{-- ① ユーザー情報 --}}
-    <section class="mq-card mb-3" aria-label="ユーザー情報">
+    {{-- ① ユーザー情報（統計は「ラベル 値」の順。見た目は値を上に出す） --}}
+    <section class="mq-card mb-4" aria-label="ユーザー情報">
         <div class="mq-profile">
             <span class="mq-profile__avatar" aria-hidden="true">{{ mb_substr($user->name, 0, 1) }}</span>
             <div class="mq-profile__body">
                 <div class="mq-profile__name">{{ $user->name }}</div>
                 <div class="mq-profile__email">{{ $user->email }}</div>
-                <div class="mq-profile__stats">
-                    <span>質問 {{ $questionCount }}</span>
-                    <span>回答 {{ $answerCount }}</span>
-                    <span>BA {{ $bestAnswerCount }}</span>
-                    <span>{{ $rank !== null ? $rank.'位' : '順位 −' }}</span>
-                </div>
             </div>
         </div>
+        <dl class="mq-stats">
+            @foreach (['質問' => $questionCount, '回答' => $answerCount, 'BA' => $bestAnswerCount, '順位' => $rank !== null ? $rank.'位' : '−'] as $label => $value)
+                <div class="mq-stat">
+                    <dt class="mq-stat__label">{{ $label }}</dt>
+                    <dd class="mq-stat__value">{{ $value }}</dd>
+                </div>
+            @endforeach
+        </dl>
         {{-- ⑤ プロフィール編集 --}}
-        <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary btn-sm w-100 mt-3 mq-btn-pill">プロフィール編集</a>
+        <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary w-100 mt-3 mq-btn-pill">プロフィール編集</a>
     </section>
 
-    {{-- ② 獲得スタンプ --}}
-    <section class="mq-card mb-3" aria-labelledby="stamps-title">
+    {{-- ② 獲得スタンプ（獲得済みは★、未獲得は鍵のアイコンと「あと n 回答」の進み具合） --}}
+    <section class="mq-card mb-4" aria-labelledby="stamps-title">
         <h2 class="mq-card-title" id="stamps-title">獲得スタンプ</h2>
         <div class="mq-stamp-tiles">
             @foreach ($stamps as $item)
+                @php($required = $item['stamp']->required_count)
                 <div @class(['mq-stamp-tile', 'is-earned' => $item['earned']])>
-                    <span class="mq-stamp-tile__icon" aria-hidden="true">{{ $item['earned'] ? '★' : '🔒' }}</span>
+                    @if ($item['earned'])
+                        <span class="mq-stamp-tile__icon" aria-hidden="true">★</span>
+                    @else
+                        <span class="mq-stamp-tile__icon"><x-icon name="lock" /><span class="visually-hidden">未獲得</span></span>
+                    @endif
                     <span class="mq-stamp-tile__name">{{ $item['stamp']->name }}</span>
                     <span class="mq-stamp-tile__sub">{{ $item['earned'] ? '獲得済み' : 'あと'.$item['remaining'].'回答' }}</span>
+                    <span class="mq-stamp-tile__bar" aria-hidden="true"><span style="width: {{ $item['earned'] ? 100 : (int) floor(($required - $item['remaining']) / max($required, 1) * 100) }}%"></span></span>
                 </div>
             @endforeach
         </div>
@@ -51,14 +59,18 @@
                 <x-question-card :question="$item" :compact="true" />
             @endif
         @empty
-            <p class="mq-empty">{{ $tab === 'answers' ? 'まだ回答はありません' : 'まだ質問はありません' }}</p>
+            @if ($tab === 'answers')
+                <x-empty-state icon="pencil" sub="回答するとここに表示されます">まだ回答はありません</x-empty-state>
+            @else
+                <x-empty-state icon="chat-question" sub="分からないことを質問してみましょう">まだ質問はありません</x-empty-state>
+            @endif
         @endforelse
     </div>
 
     {{ $list->links() }}
 
     {{-- ⑥ ログアウト --}}
-    <form method="POST" action="{{ route('logout') }}" class="mt-3">
+    <form method="POST" action="{{ route('logout') }}" class="mt-4">
         @csrf
         <button type="submit" class="btn btn-outline-danger bg-white w-100 mq-logout">ログアウト</button>
     </form>

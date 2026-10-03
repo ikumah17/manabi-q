@@ -57,10 +57,12 @@ class MypageTest extends TestCase
                 '獲得スタンプ',
                 '★', '10回答達成', '獲得済み',
                 '★', '50回答達成', '獲得済み',
-                '🔒', '100回答達成', 'あと36回答',
+                '未獲得', '100回答達成', 'あと36回答',
                 '自分の質問（8）', '自分の回答（64）',
                 'ログアウト',
-            ]);
+            ])
+            // ロック中のスタンプには鍵のアイコン（SVG の data-icon）を出す
+            ->assertSeeInOrder(['50回答達成', 'data-icon="lock"', '100回答達成'], false);
     }
 
     public function test_new_user_has_no_rank_and_all_stamps_locked(): void
