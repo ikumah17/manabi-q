@@ -114,9 +114,9 @@ class RatingAverageTest extends TestCase
         $response = $this->actingAs($this->me)->get('/ranking')->assertOk();
 
         $response->assertSeeTextInOrder([
-            '情報 花子', 'ベストアンサー 2件', 'ベストアンサー評価の平均', '4.5',
-            '山田 太郎', 'ベストアンサー 1件', 'ベストアンサー評価の平均', '3.0',
-            '文学 三子', 'ベストアンサー 0件', 'ベストアンサー評価の平均', '—',
+            '情報 花子', 'ベストアンサー 2件', '評価 ★4.5',
+            '山田 太郎', 'ベストアンサー 1件', '評価 ★3.0',
+            '文学 三子', 'ベストアンサー 0件', '評価 —',
         ]);
         $this->assertSame(3, substr_count($response->getContent(), 'data-rating-average'));
         // 評価が無い人には★を付けない
@@ -129,7 +129,7 @@ class RatingAverageTest extends TestCase
 
         $ranking = $this->actingAs($this->me)->get('/ranking')->getContent();
         $myRank = explode('aria-label="ランキング一覧"', explode('aria-label="あなたの順位"', $ranking)[1])[0];
-        $this->assertStringNotContainsString('ベストアンサー評価の平均', $myRank);
+        $this->assertStringNotContainsString('data-rating-average', $myRank);
         $this->assertStringNotContainsString('5.0', $myRank);
 
         $this->actingAs($this->me)->get('/home')->assertOk()
