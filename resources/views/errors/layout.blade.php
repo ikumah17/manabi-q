@@ -35,6 +35,7 @@
             border-radius: 20px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
             text-align: center;
+            word-break: auto-phrase; /* 日本語を文節で折り返す（対応ブラウザのみ） */
         }
         .mq-error__brand { margin: 0 0 20px; color: #1d1d1f; font-size: 17px; font-weight: 600; }
         .mq-error__code { margin: 0; color: #6e6e73; font-size: 13px; letter-spacing: .06em; }
