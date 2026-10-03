@@ -79,7 +79,7 @@
                 @endif
             </article>
         @empty
-            <p class="mq-empty">まだ回答はありません</p>
+            <x-empty-state icon="pencil" sub="最初の回答を投稿してみましょう">まだ回答はありません</x-empty-state>
         @endforelse
     </div>
 

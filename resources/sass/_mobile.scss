@@ -379,16 +379,16 @@
 
 // G6 ②・G7 ① 質問タイトル
 .mq-question-title {
-    margin: 0 0 .25rem;
+    margin: 0 0 var(--mq-space-2);
     font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.4;
+    font-weight: 600;
+    line-height: 1.45;
 }
 
 .mq-section-title {
-    margin: 1.25rem 0 .75rem;
-    font-size: 1.0625rem;
-    font-weight: 700;
+    margin: var(--mq-space-7) 0 var(--mq-space-3);
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
 }
 
 // G5 ④ AI即時回答のチェック（薄い青の面＋sparkle。チェックは主色、藍色は sparkle だけ）
@@ -477,79 +477,99 @@
     font-size: var(--mq-fs-meta);
 }
 
-// G7 ④ ベストアンサー
+// G7 ④ ベストアンサー（薄いオレンジの面。バッジは白地で目立たせる）
 .mq-best-answer {
-    padding: 1rem;
-    border: 1px solid var(--mq-best);
-    border-radius: .75rem;
+    padding: var(--mq-space-4) 1.125rem;
+    border: 1px solid #f6dfbd;
+    border-radius: var(--mq-radius-card);
     background: var(--mq-best-bg);
+
+    .mq-badge--best { background: #fff; }
 }
 
+// ★評価（文字として残す。色は文字以外の基準 3:1 以上の #C77700）
 .mq-stars {
-    color: var(--mq-best);
-    font-size: 1.25rem;
-    letter-spacing: .05em;
+    color: var(--mq-star);
+    font-size: 1.125rem;
+    letter-spacing: .04em;
     line-height: 1;
 }
 
-// 添付スタンプ（装飾のみ）
+// 添付スタンプ（装飾のみ。「★ 50回答達成」は文字として残す）
 .mq-stamp-chip {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
     padding: .125rem .625rem;
     border-radius: 999px;
     background: var(--mq-best-bg);
     color: var(--mq-best-text);
-    font-size: .8125rem;
-    font-weight: 700;
+    font-size: var(--mq-fs-meta);
+    font-weight: 600;
 }
 
 .mq-stamp-chip__star {
-    color: var(--mq-best);
+    color: var(--mq-star);
 }
 
+// 一覧の中の副ボタン（ベストアンサーに選ぶ・AI回答を再試行・プロフィール編集）：高さ 44px
 .mq-btn-pill {
-    border-radius: .5rem;
+    min-height: 2.75rem;
+    border-radius: var(--mq-radius-btn);
+    font-size: var(--mq-fs-sub);
 }
 
-// G8 ① 回答する質問・G9 ① 対象回答（灰色の枠）
+// G8 ① 回答する質問・G9 ① 対象回答・G17 ① 通報対象（薄いグレーの面）
 .mq-quote {
-    padding: .75rem 1rem;
-    border-radius: .5rem;
+    padding: var(--mq-space-3) var(--mq-space-4);
+    border-radius: var(--mq-radius-btn);
     background: var(--mq-gray-bg);
 }
 
 .mq-quote__label {
+    margin-bottom: 2px;
     color: var(--mq-muted);
-    font-size: .75rem;
+    font-size: var(--mq-fs-meta);
 }
 
-// G8 ③ スタンプ選択（2列のラジオボタン）
+.mq-quote__title {
+    font-size: var(--mq-fs-body);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+// G8 ③ スタンプ選択（2列のラジオボタン。名前の折り返しは許容）
 .mq-stamp-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: .5rem;
+    gap: var(--mq-space-2);
 }
 
 .mq-stamp-option {
     display: flex;
     align-items: center;
-    gap: .5rem;
-    padding: .625rem .75rem;
+    gap: var(--mq-space-2);
+    min-height: 3.25rem;
+    padding: .5rem .75rem;
     border: 1px solid var(--mq-border);
-    border-radius: .5rem;
-    background: #fff;
+    border-radius: var(--mq-radius-input);
+    background: var(--mq-surface);
     font-size: .875rem;
-    font-weight: 700;
+    font-weight: 500;
+    line-height: 1.35;
     cursor: pointer;
 
-    .form-check-input { margin: 0; }
+    .form-check-input { flex-shrink: 0; margin: 0; }
 
     &:has(:checked) {
         border-color: var(--mq-primary);
         background: var(--mq-primary-bg);
     }
 
+    &:has(:focus-visible) { box-shadow: var(--mq-focus-ring); }
+
     &.is-locked {
+        border-color: var(--mq-hairline);
         background: var(--mq-gray-bg);
         color: var(--mq-muted);
         cursor: not-allowed;
@@ -574,8 +594,12 @@
 }
 
 .mq-rating__star {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
     color: var(--mq-border);
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     line-height: 1;
     cursor: pointer;
 }
@@ -583,26 +607,25 @@
 .mq-rating__input:checked ~ .mq-rating__star,
 .mq-rating__star:hover,
 .mq-rating__star:hover ~ .mq-rating__star {
-    color: var(--mq-best);
+    color: var(--mq-star);
 }
 
 .mq-rating__input:focus-visible + .mq-rating__star {
-    outline: 2px solid var(--mq-primary);
-    outline-offset: 2px;
-    border-radius: .25rem;
+    border-radius: var(--mq-radius-sm);
+    box-shadow: var(--mq-focus-ring);
 }
 
 .mq-rating__value {
-    margin-top: .25rem;
+    margin-top: var(--mq-space-1);
     color: var(--mq-muted);
-    font-size: .875rem;
+    font-size: var(--mq-fs-sub);
 }
 
 // G6・G7 ③ AI回答を取得できなかった場合（質問者本人のみ）
 .mq-ai-answer__unavailable {
     margin: 0;
     color: var(--mq-muted);
-    font-size: .9375rem;
+    font-size: var(--mq-fs-sub);
 }
 
 // ---- ランキング（G4 ⑨⑩・G10） ----

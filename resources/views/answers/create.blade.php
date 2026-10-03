@@ -1,24 +1,25 @@
 {{-- G8 回答投稿 --}}
 <x-layouts.mobile header="回答する" :back="route('questions.show', $question)">
     {{-- ① 質問タイトル --}}
-    <div class="mq-quote mb-3">
+    <div class="mq-quote mb-4">
         <div class="mq-quote__label">回答する質問</div>
-        <div class="fw-bold">{{ $question->title }}</div>
+        <div class="mq-quote__title">{{ $question->title }}</div>
     </div>
 
     <form method="POST" action="{{ route('answers.store', $question) }}" novalidate data-submit-once>
         @csrf
 
         {{-- ② 回答本文 --}}
-        <div class="mb-3">
+        <div class="mb-4">
             <label for="body" class="form-label">回答本文（必須）</label>
-            <textarea id="body" name="body" class="form-control" rows="9" maxlength="2000"
-                      placeholder="わかりやすく回答を書いてください（2000文字以内）" required>{{ old('body') }}</textarea>
+            <textarea id="body" name="body" @class(['form-control', 'is-invalid' => $errors->has('body')]) rows="9" maxlength="2000"
+                      placeholder="わかりやすく回答を書いてください（2000文字以内）" required
+                      @error('body') aria-invalid="true" @enderror>{{ old('body') }}</textarea>
         </div>
 
         {{-- ③ スタンプ（獲得済みのみ選択可。未獲得はグレー表示） --}}
-        <fieldset class="mb-3">
-            <legend class="form-label fs-6">スタンプ（任意・獲得済みのみ選択可）</legend>
+        <fieldset class="mb-4">
+            <legend class="form-label">スタンプ（任意・獲得済みのみ選択可）</legend>
             <div class="mq-stamp-options">
                 <label class="mq-stamp-option">
                     <input type="radio" name="stamp_id" value="" class="form-check-input" @checked(blank(old('stamp_id')))>
@@ -36,9 +37,9 @@
         </fieldset>
 
         {{-- ④ エラーメッセージ --}}
-        <x-form-errors class="mb-3" />
+        <x-form-errors class="mb-4" />
 
         {{-- ⑥ 回答する --}}
-        <button type="submit" class="btn btn-primary w-100">回答する</button>
+        <button type="submit" class="btn btn-primary w-100 mq-btn-tall">回答する</button>
     </form>
 </x-layouts.mobile>
