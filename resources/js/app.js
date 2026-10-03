@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const CHART_PRIMARY = '#2e70d9';
+const CHART_PRIMARY = '#007aff';
 const CHART_GRID = '#d9dee8';
-const CHART_TEXT = '#6b7587';
+const CHART_TEXT = '#6e6e73';
 
 // 横棒の右に値を描く（設計画像の「420」などの数値ラベル。追加パッケージは使わない）
 const barValueLabels = {
