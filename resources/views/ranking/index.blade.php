@@ -3,7 +3,7 @@
     <p class="mq-page-lead">回答数の多い順に表示しています。回答数に応じてスタンプ（10・50・100回答）を獲得できます。</p>
 
     {{-- ② あなたの順位 --}}
-    <section class="mq-my-rank mb-3" aria-label="あなたの順位">
+    <section class="mq-my-rank mb-4" aria-label="あなたの順位">
         <span class="mq-my-rank__label">あなたの順位</span>
         @if ($mine)
             <span class="mq-my-rank__rank">{{ $mine->rank }}位</span>
@@ -16,7 +16,7 @@
 
     {{-- ① ランキング一覧 --}}
     @if ($entries->isEmpty())
-        <p class="mq-empty">まだランキングはありません</p>
+        <x-empty-state icon="trophy" sub="回答するとランキングに表示されます">まだランキングはありません</x-empty-state>
     @else
         <ol class="mq-ranking-list" aria-label="ランキング一覧">
             @foreach ($entries as $entry)
@@ -27,7 +27,7 @@
                         <div class="mq-ranking-list__name">{{ $entry->name }}</div>
                         <div class="mq-ranking-list__sub">
                             <span>ベストアンサー {{ $entry->bestAnswerCount }}件</span>
-                            <x-stamp-levels :stamps="$entry->earnedStamps" />
+                            <x-stamp-levels :stamps="$entry->earnedStamps" class="mq-stamp-levels" />
                         </div>
                     </div>
                     <div class="mq-ranking-list__count">

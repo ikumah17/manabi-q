@@ -630,7 +630,7 @@
 
 // ---- ランキング（G4 ⑨⑩・G10） ----
 
-// 順位の丸（1位 金・2位 銀・3位 銅・4位以降 灰色）
+// 順位の丸（1位 金・2位 銀・3位 銅・4位以降は無地。いずれも薄い面＋濃い数字で 4.5:1 以上）
 .mq-rank-badge {
     display: inline-flex;
     flex-shrink: 0;
@@ -640,63 +640,78 @@
     height: 2rem;
     border-radius: 50%;
     background: var(--mq-gray-bg);
-    color: var(--mq-text);
-    font-weight: 700;
+    color: var(--mq-muted);          // #F2F2F7 の上で 4.54:1
+    font-size: var(--mq-fs-sub);
+    font-weight: 600;
 
-    &--1 { background: #f5a624; color: #fff; }
-    &--2 { background: #a6abb2; color: #fff; }
-    &--3 { background: #bf804c; color: #fff; }
+    &--1 { background: var(--mq-best-bg); color: var(--mq-best-text); }   // 5.59:1
+    &--2 { background: #e5e5ea; color: #48484a; }                           // 7.27:1
+    &--3 { background: #f8ede5; color: #8a4a1f; }                           // 5.92:1
 }
 
-// G10 ② あなたの順位
+// G10 ② あなたの順位（白いカード。左に順位、右に回答数・ベストアンサー）
 .mq-my-rank {
-    display: flex;
+    display: grid;
+    grid-template-areas:
+        "label detail"
+        "rank detail";
+    grid-template-columns: auto 1fr;
+    column-gap: var(--mq-space-5);
     align-items: center;
-    gap: 1rem;
-    padding: .875rem 1rem;
-    border: 1px solid var(--mq-primary);
-    border-radius: .75rem;
-    background: var(--mq-primary-bg);
+    padding: var(--mq-space-4) 1.125rem;
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
 }
 
 .mq-my-rank__label {
-    color: var(--mq-primary);
-    font-size: .875rem;
-    font-weight: 700;
+    grid-area: label;
+    color: var(--mq-muted);
+    font-size: var(--mq-fs-meta);
 }
 
 .mq-my-rank__rank {
-    color: var(--mq-primary);
+    grid-area: rank;
+    color: var(--mq-text);
     font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1;
+    font-weight: 600;
+    line-height: 1.15;
 }
 
 .mq-my-rank__detail {
-    font-size: .875rem;
-    line-height: 1.35;
+    grid-area: detail;
+    justify-self: end;
+    padding-left: var(--mq-space-5);
+    border-left: 1px solid var(--mq-hairline);
+    color: var(--mq-text);
+    font-size: var(--mq-fs-sub);
+    line-height: 1.7;
+    text-align: right;
 }
 
-// G10 ① ランキング一覧
+// G10 ① ランキング一覧（設定アプリ風：白いカードに細い区切り線）
 .mq-ranking-list {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: 1px solid var(--mq-border);
-    border-radius: .75rem;
-    background: #fff;
+    border: 1px solid var(--mq-hairline);
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-surface);
+    box-shadow: var(--mq-shadow-card);
     list-style: none;
 }
 
 .mq-ranking-list__item {
     display: flex;
     align-items: center;
-    gap: .875rem;
-    padding: .75rem 1rem;
+    gap: var(--mq-space-3);
+    min-height: 3.75rem;
+    padding: .625rem 1.125rem;
 
-    & + & { border-top: 1px solid var(--mq-border); }
+    & + & { border-top: 1px solid var(--mq-hairline); }
 
-    &.is-mine { background: var(--mq-primary-bg); }
+    &.is-mine { background: #f5f9ff; }
 }
 
 .mq-ranking-list__body {
@@ -706,7 +721,8 @@
 
 .mq-ranking-list__name {
     overflow: hidden;
-    font-weight: 700;
+    font-size: var(--mq-fs-body);
+    font-weight: 600;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -716,20 +732,23 @@
     flex-wrap: wrap;
     column-gap: .75rem;
     color: var(--mq-muted);
-    font-size: .75rem;
+    font-size: var(--mq-fs-meta);
 }
+
+// 「★ 10・50・100」は文字のまま。★だけ #C77700
+.mq-stamp-levels > [aria-hidden] { color: var(--mq-star); }
 
 .mq-ranking-list__count {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    line-height: 1.1;
+    line-height: 1.15;
 }
 
 .mq-ranking-list__number {
-    color: var(--mq-primary);
-    font-size: 1.25rem;
-    font-weight: 700;
+    color: var(--mq-text);
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
 }
 
 .mq-ranking-list__unit {
