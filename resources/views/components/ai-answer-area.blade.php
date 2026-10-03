@@ -11,7 +11,7 @@
 @elseif ($question->use_ai && $isOwner)
     <section {{ $attributes->class('mq-ai-answer') }} aria-label="AIの即時回答">
         <div class="mq-ai-answer__head">
-            <span class="mq-ai-answer__label">AI</span>
+            <span class="mq-ai-answer__label"><x-icon name="sparkle" />AI</span>
             <h2 class="mq-ai-answer__title">AIの即時回答</h2>
         </div>
         <p class="mq-ai-answer__unavailable" role="status">{{ session('ai_error') ?? \App\Services\AiAnswer\AiAnswerResult::FAILED_MESSAGE }}</p>

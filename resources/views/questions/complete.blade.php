@@ -1,7 +1,7 @@
 {{-- G6 質問投稿完了 --}}
 <x-layouts.mobile header="投稿完了">
     {{-- ① 完了メッセージ --}}
-    <div class="mq-flash mq-flash--success mb-3" role="status">✓ 質問を投稿しました</div>
+    <div class="mq-flash mq-flash--success mb-3" role="status"><x-icon name="check" />質問を投稿しました</div>
 
     {{-- ② 投稿内容 --}}
     <div class="mq-card mb-3">

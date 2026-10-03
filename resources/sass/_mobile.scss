@@ -391,13 +391,14 @@
     font-weight: 700;
 }
 
-// G5 ④ AI即時回答のチェック
+// G5 ④ AI即時回答のチェック（薄い青の面＋sparkle。チェックは主色、藍色は sparkle だけ）
 .mq-ai-option {
     display: flex;
-    gap: .75rem;
-    padding: 1rem;
-    border-radius: .75rem;
-    background: var(--mq-ai-bg);
+    gap: var(--mq-space-3);
+    padding: var(--mq-space-4);
+    border: 1px solid #e1e8f3;
+    border-radius: var(--mq-radius-btn);
+    background: var(--mq-ai-surface);
 }
 
 .mq-ai-option__check {
@@ -405,64 +406,75 @@
     width: 1.25rem;
     height: 1.25rem;
     margin-top: .125rem;
-
-    &:checked {
-        border-color: var(--mq-ai);
-        background-color: var(--mq-ai);
-    }
 }
 
 .mq-ai-option__label {
     display: flex;
     flex-direction: column;
+    gap: 2px;
     cursor: pointer;
 }
 
 .mq-ai-option__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--mq-text);
+    font-size: var(--mq-fs-body);
+    font-weight: 600;
+}
+
+.mq-ai-option__icon {
+    width: 1.125rem;
+    height: 1.125rem;
     color: var(--mq-ai);
-    font-weight: 700;
 }
 
 .mq-ai-option__text {
     color: var(--mq-muted);
-    font-size: .8125rem;
+    font-size: var(--mq-fs-sub);
 }
 
-// G6 ③④・G7 ③ AIの即時回答
+// G6 ③④・G7 ③ AIの即時回答（薄い青の面。見出しの「AI」は藍色の小さなバッジ＋sparkle）
 .mq-ai-answer {
-    padding: 1rem;
-    border: 1px solid #e2d9fa;
-    border-radius: .75rem;
-    background: var(--mq-ai-bg);
+    padding: var(--mq-space-4) 1.125rem;
+    border: 1px solid #e1e8f3;
+    border-radius: var(--mq-radius-card);
+    background: var(--mq-ai-surface);
 }
 
 .mq-ai-answer__head {
     display: flex;
     align-items: center;
-    gap: .5rem;
-    margin-bottom: .375rem;
+    gap: var(--mq-space-2);
+    margin-bottom: var(--mq-space-2);
 }
 
 .mq-ai-answer__label {
-    padding: .125rem .5rem;
-    border-radius: .25rem;
-    background: var(--mq-ai);
-    color: #fff;
-    font-size: .75rem;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: .125rem .5rem .125rem .375rem;
+    border-radius: .375rem;
+    background: var(--mq-ai-bg);
+    color: var(--mq-ai);
+    font-size: var(--mq-fs-meta);
+    font-weight: 600;
+
+    .mq-icon { width: .875rem; height: .875rem; }
 }
 
 .mq-ai-answer__title {
     margin: 0;
-    color: var(--mq-ai);
-    font-size: 1.125rem;
-    font-weight: 700;
+    color: var(--mq-text);
+    font-size: var(--mq-fs-section);
+    font-weight: 600;
 }
 
 .mq-ai-answer__note {
-    margin: .375rem 0 0;
+    margin: var(--mq-space-2) 0 0;
     color: var(--mq-muted);
-    font-size: .75rem;
+    font-size: var(--mq-fs-meta);
 }
 
 // G7 ④ ベストアンサー
