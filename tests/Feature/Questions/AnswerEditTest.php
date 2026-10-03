@@ -5,6 +5,7 @@ namespace Tests\Feature\Questions;
 use App\Actions\ChooseBestAnswer;
 use App\Http\Controllers\AnswerController;
 use App\Models\Answer;
+use App\Models\Like;
 use App\Models\Question;
 use App\Models\Report;
 use App\Models\Stamp;
@@ -156,6 +157,8 @@ class AnswerEditTest extends TestCase
         Answer::factory()->for($this->me)->create();
         Report::factory()->forAnswer($this->answer)->create();
         $questionReport = Report::factory()->create(['question_id' => $this->question->id]);
+        Like::factory()->forAnswer($this->answer)->create();
+        $questionLike = Like::factory()->create(['question_id' => $this->question->id]);
         $this->assertSame(2, app(RankingService::class)->answerCount($this->me));
 
         $this->actingAs($this->me)->delete($this->destroyUrl())
@@ -165,6 +168,7 @@ class AnswerEditTest extends TestCase
         $this->assertModelMissing($this->answer);
         $this->assertModelExists($this->question);
         $this->assertSame([$questionReport->id], Report::pluck('id')->all());
+        $this->assertSame([$questionLike->id], Like::pluck('id')->all(), '回答へのいいねだけが削除される');
         $this->assertSame(1, app(RankingService::class)->answerCount($this->me));
     }
 

@@ -1,6 +1,6 @@
 {{--
     質問カード（G4 ⑦・G11 ④ の一覧）。クリックで G7 へ
-    question は Question::forList() で取得したもの（answers_count・ai_answer_exists を使う）
+    question は Question::forList() で取得したもの（answers_count・ai_answer_exists を使う。G4 は withCount('likes') の likes_count も使う）
     - compact : G11 用（投稿者・本文抜粋を出さず「日付・回答 n」だけ）
     - at      : 表示する日時（G11「自分の回答」では自分の回答の日時）
     - href    : リンク先（G11「自分の回答」では該当する回答の位置）
@@ -26,6 +26,7 @@
             <span>{{ $question->user->name }}</span>
             <x-datetime :at="$question->created_at" />
             <span>回答 {{ $question->answers_count }}</span>
+            <span>いいね {{ $question->likes_count }}</span>
         </div>
     @endif
 </a>

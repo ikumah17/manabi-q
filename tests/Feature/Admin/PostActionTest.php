@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Enums\PostStatus;
 use App\Models\AiAnswer;
 use App\Models\Answer;
+use App\Models\Like;
 use App\Models\Question;
 use App\Models\Report;
 use App\Models\User;
@@ -77,6 +78,9 @@ class PostActionTest extends TestCase
         $other = Question::factory()->create();
         $otherAnswer = Answer::factory()->for($other)->create();
         $otherReport = Report::factory()->forAnswer($otherAnswer)->create();
+        Like::factory()->create(['question_id' => $question->id]);
+        Like::factory()->forAnswer($answers[1])->create();
+        $otherLike = Like::factory()->forAnswer($otherAnswer)->create();
 
         $this->act('delete', 'admin.posts.questions.destroy', $question->id)
             ->assertRedirect(route('admin.posts.index'))
@@ -86,6 +90,7 @@ class PostActionTest extends TestCase
         $this->assertSame(0, Answer::where('question_id', $question->id)->count());
         $this->assertSame(0, AiAnswer::where('question_id', $question->id)->count());
         $this->assertSame([$otherReport->id], Report::pluck('id')->all());
+        $this->assertSame([$otherLike->id], Like::pluck('id')->all(), '質問と、その回答へのいいねも連動して削除される');
         $this->assertModelExists($other);
         $this->assertModelExists($otherAnswer);
     }
@@ -98,6 +103,8 @@ class PostActionTest extends TestCase
         Answer::factory()->for($answerer)->create();
         Report::factory()->forAnswer($answer)->create();
         $questionReport = Report::factory()->create(['question_id' => $question->id]);
+        Like::factory()->forAnswer($answer)->count(2)->create();
+        $questionLike = Like::factory()->create(['question_id' => $question->id]);
         $this->assertSame(2, app(RankingService::class)->answerCount($answerer));
 
         $this->act('delete', 'admin.posts.answers.destroy', $answer->id)->assertSessionHas('success', '削除しました');
@@ -105,6 +112,7 @@ class PostActionTest extends TestCase
         $this->assertModelMissing($answer);
         $this->assertModelExists($question);
         $this->assertSame([$questionReport->id], Report::pluck('id')->all());
+        $this->assertSame([$questionLike->id], Like::pluck('id')->all(), '回答へのいいねだけが削除される');
         $this->assertSame(1, app(RankingService::class)->answerCount($answerer));
     }
 

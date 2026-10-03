@@ -3,6 +3,7 @@
 namespace Tests\Feature\Database;
 
 use App\Models\Category;
+use App\Models\Like;
 use App\Models\Stamp;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,6 +23,7 @@ class SeederTest extends TestCase
         );
         $this->assertSame([10, 50, 100], Stamp::ordered()->pluck('required_count')->all());
         $this->assertSame(0, User::count(), '管理者はシーダーで作らない');
+        $this->assertSame(0, Like::count(), 'いいねはシーダーで作らない（likes テーブルはマスタではない）');
 
         foreach (Stamp::all() as $stamp) {
             $this->assertFileExists(public_path($stamp->image_path));

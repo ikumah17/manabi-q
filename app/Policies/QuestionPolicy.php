@@ -42,6 +42,14 @@ class QuestionPolicy
     }
 
     /**
+     * G7 ⑩ 質問へのいいね（付ける・取り消す）：非表示の質問は 404、自分の質問は 403
+     */
+    public function like(User $user, Question $question): Response
+    {
+        return $this->report($user, $question);
+    }
+
+    /**
      * G7 ⑪・G19 質問の編集：質問者本人のみ（403）。非表示の質問は 404。解決済みの質問も編集できる
      */
     public function update(User $user, Question $question): Response

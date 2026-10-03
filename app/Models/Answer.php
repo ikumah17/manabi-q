@@ -75,6 +75,14 @@ class Answer extends Model
     }
 
     /**
+     * @return HasMany<Like, $this>
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
      * 公開中の回答のみ
      */
     #[Scope]

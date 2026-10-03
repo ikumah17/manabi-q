@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BestAnswerController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionController;
@@ -92,6 +93,22 @@ Route::middleware('auth')->group(function () {
             ->scopeBindings()
             ->can('report', 'answer')
             ->name('reports.answer');
+
+        // G7 ⑩ いいね（POST で付ける・DELETE で取り消す。自分の投稿は 403、非表示の投稿は 404）
+        Route::post('/questions/{question}/likes', [LikeController::class, 'storeForQuestion'])
+            ->can('like', 'question')
+            ->name('likes.question.store');
+        Route::delete('/questions/{question}/likes', [LikeController::class, 'destroyForQuestion'])
+            ->can('like', 'question')
+            ->name('likes.question.destroy');
+        Route::post('/questions/{question}/answers/{answer}/likes', [LikeController::class, 'storeForAnswer'])
+            ->scopeBindings()
+            ->can('like', 'answer')
+            ->name('likes.answer.store');
+        Route::delete('/questions/{question}/answers/{answer}/likes', [LikeController::class, 'destroyForAnswer'])
+            ->scopeBindings()
+            ->can('like', 'answer')
+            ->name('likes.answer.destroy');
 
         // G10 回答者ランキング
         Route::get('/ranking', [RankingController::class, 'index'])->name('ranking');

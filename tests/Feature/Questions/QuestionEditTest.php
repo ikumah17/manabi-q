@@ -5,6 +5,7 @@ namespace Tests\Feature\Questions;
 use App\Models\AiAnswer;
 use App\Models\Answer;
 use App\Models\Category;
+use App\Models\Like;
 use App\Models\Question;
 use App\Models\Report;
 use App\Models\User;
@@ -143,6 +144,9 @@ class QuestionEditTest extends TestCase
         Report::factory()->forAnswer($answers[0])->create();
         $otherAnswer = Answer::factory()->for($answerer)->create();
         $otherReport = Report::factory()->forAnswer($otherAnswer)->create();
+        Like::factory()->create(['question_id' => $this->question->id]);
+        Like::factory()->forAnswer($answers[1])->create();
+        $otherLike = Like::factory()->forAnswer($otherAnswer)->create();
         $this->assertSame(3, app(RankingService::class)->answerCount($answerer));
 
         $this->actingAs($this->me)->delete(route('questions.destroy', $this->question))
@@ -153,6 +157,7 @@ class QuestionEditTest extends TestCase
         $this->assertSame(0, Answer::where('question_id', $this->question->id)->count());
         $this->assertSame(0, AiAnswer::where('question_id', $this->question->id)->count());
         $this->assertSame([$otherReport->id], Report::pluck('id')->all());
+        $this->assertSame([$otherLike->id], Like::pluck('id')->all(), '質問と、その回答へのいいねも削除される');
         $this->assertModelExists($otherAnswer);
         $this->assertSame(1, app(RankingService::class)->answerCount($answerer), '回答数・ランキングは下がる');
     }

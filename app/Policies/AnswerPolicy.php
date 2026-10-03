@@ -23,6 +23,15 @@ class AnswerPolicy
     }
 
     /**
+     * G7 ⑩ 回答へのいいね（付ける・取り消す）：非表示の回答・非表示の質問への回答は 404、自分の回答は 403。
+     * ベストアンサーにも付けられる
+     */
+    public function like(User $user, Answer $answer): Response
+    {
+        return $this->report($user, $answer);
+    }
+
+    /**
      * G7 ⑪・G20 回答の編集：回答者本人のみ（403）。非表示の回答・非表示の質問への回答は 404。
      * ベストアンサーに決定済みの回答は編集できない（403）
      */

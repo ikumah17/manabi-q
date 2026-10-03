@@ -59,12 +59,17 @@ class QuestionController extends Controller
     {
         Gate::authorize('view', $question);
 
-        $question->load(['user', 'category', 'aiAnswer']);
+        // ⑩ いいねの件数（likes_count）と、ログインユーザーがいいね済みか（liked_by_me_count）
+        $userId = $request->user()->id;
+        $likeCounts = ['likes', 'likes as liked_by_me_count' => fn ($likes) => $likes->where('user_id', $userId)];
+
+        $question->load(['user', 'category', 'aiAnswer'])->loadCount($likeCounts);
 
         // 公開中の回答を投稿日時順に。ベストアンサーは別枠（④）で表示し、件数には含める
         $answers = $question->answers()
             ->published()
             ->with(['user', 'stamp'])
+            ->withCount($likeCounts)
             ->oldest()
             ->orderBy('id')
             ->get()

@@ -93,6 +93,14 @@ class Question extends Model
     }
 
     /**
+     * @return HasMany<Like, $this>
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
      * 公開中の質問のみ
      */
     #[Scope]

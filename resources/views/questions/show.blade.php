@@ -16,22 +16,23 @@
             <span>回答 {{ $answerCount }}件</span>
         </div>
         <div class="mq-text">{{ $question->body }}</div>
-        @if (Gate::allows('update', $question) || Gate::allows('report', $question))
-            <div class="mq-post-actions">
-                {{-- ⑪ 編集 ⑫ 削除（自分の質問のみ） --}}
-                @can('update', $question)
-                    <div class="ms-auto d-flex gap-2">
-                        <a href="{{ route('questions.edit', $question) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
-                        <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
-                                data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-question">削除</button>
-                    </div>
-                @endcan
-                {{-- ⑨ 通報する（自分の投稿には出さない） --}}
-                @can('report', $question)
-                    <x-report-button sheet="report-sheet-question" class="ms-auto" />
-                @endcan
-            </div>
-        @endif
+        <div class="mq-post-actions flex-wrap">
+            {{-- ⑩ いいね（自分の質問は件数のみ） --}}
+            <x-like-button :count="$question->likes_count" :liked="$question->liked_by_me_count > 0"
+                           :action="Gate::allows('like', $question) ? route('likes.question.store', $question) : null" />
+            {{-- ⑪ 編集 ⑫ 削除（自分の質問のみ） --}}
+            @can('update', $question)
+                <div class="ms-auto d-flex gap-2">
+                    <a href="{{ route('questions.edit', $question) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
+                    <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
+                            data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-question">削除</button>
+                </div>
+            @endcan
+            {{-- ⑨ 通報する（自分の投稿には出さない） --}}
+            @can('report', $question)
+                <x-report-button sheet="report-sheet-question" class="ms-auto" />
+            @endcan
+        </div>
     </article>
 
     {{-- ③ AI回答（ある場合のみ。取得できなかった場合は質問者本人にだけその旨） --}}
@@ -52,11 +53,14 @@
             @if ($bestAnswer->stamp)
                 <x-stamp-chip :stamp="$bestAnswer->stamp" class="mt-2" />
             @endif
-            @can('report', $bestAnswer)
-                <div class="mq-post-actions">
+            <div class="mq-post-actions flex-wrap">
+                {{-- ⑩ いいね（自分の回答は件数のみ） --}}
+                <x-like-button :count="$bestAnswer->likes_count" :liked="$bestAnswer->liked_by_me_count > 0"
+                               :action="Gate::allows('like', $bestAnswer) ? route('likes.answer.store', [$question, $bestAnswer]) : null" />
+                @can('report', $bestAnswer)
                     <x-report-button :sheet="'report-sheet-answer-'.$bestAnswer->id" class="ms-auto" />
-                </div>
-            @endcan
+                @endcan
+            </div>
         </section>
     @endif
 
@@ -74,27 +78,28 @@
                     <x-stamp-chip :stamp="$answer->stamp" class="mt-2" />
                 @endif
 
-                @if (Gate::allows('chooseBest', [$question, $answer]) || Gate::allows('report', $answer) || Gate::allows('update', $answer))
-                    <div class="mq-post-actions">
-                        {{-- ⑥ ベストアンサーに選ぶ（質問者本人かつ未解決のときのみ。自分の回答は除く） --}}
-                        @can('chooseBest', [$question, $answer])
-                            <button type="button" class="btn btn-outline-primary btn-sm mq-btn-pill"
-                                    data-bs-toggle="offcanvas" data-bs-target="#best-sheet-{{ $answer->id }}">ベストアンサーに選ぶ</button>
-                        @endcan
-                        {{-- ⑪ 編集 ⑫ 削除（自分の回答のみ。ベストアンサーには出さない） --}}
-                        @can('update', $answer)
-                            <div class="ms-auto d-flex gap-2">
-                                <a href="{{ route('answers.edit', [$question, $answer]) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
-                                <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
-                                        data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-answer-{{ $answer->id }}">削除</button>
-                            </div>
-                        @endcan
-                        {{-- ⑨ 通報する（自分の回答には出さない） --}}
-                        @can('report', $answer)
-                            <x-report-button :sheet="'report-sheet-answer-'.$answer->id" class="ms-auto" />
-                        @endcan
-                    </div>
-                @endif
+                <div class="mq-post-actions flex-wrap">
+                    {{-- ⑩ いいね（自分の回答は件数のみ） --}}
+                    <x-like-button :count="$answer->likes_count" :liked="$answer->liked_by_me_count > 0"
+                                   :action="Gate::allows('like', $answer) ? route('likes.answer.store', [$question, $answer]) : null" />
+                    {{-- ⑥ ベストアンサーに選ぶ（質問者本人かつ未解決のときのみ。自分の回答は除く） --}}
+                    @can('chooseBest', [$question, $answer])
+                        <button type="button" class="btn btn-outline-primary btn-sm mq-btn-pill"
+                                data-bs-toggle="offcanvas" data-bs-target="#best-sheet-{{ $answer->id }}">ベストアンサーに選ぶ</button>
+                    @endcan
+                    {{-- ⑪ 編集 ⑫ 削除（自分の回答のみ。ベストアンサーには出さない） --}}
+                    @can('update', $answer)
+                        <div class="ms-auto d-flex gap-2">
+                            <a href="{{ route('answers.edit', [$question, $answer]) }}" class="btn btn-outline-primary btn-sm mq-btn-pill d-inline-flex align-items-center px-3">編集</a>
+                            <button type="button" class="btn btn-outline-danger btn-sm mq-btn-pill px-3"
+                                    data-bs-toggle="offcanvas" data-bs-target="#delete-sheet-answer-{{ $answer->id }}">削除</button>
+                        </div>
+                    @endcan
+                    {{-- ⑨ 通報する（自分の回答には出さない） --}}
+                    @can('report', $answer)
+                        <x-report-button :sheet="'report-sheet-answer-'.$answer->id" class="ms-auto" />
+                    @endcan
+                </div>
             </article>
         @empty
             <x-empty-state icon="pencil" sub="最初の回答を投稿してみましょう">まだ回答はありません</x-empty-state>

@@ -99,4 +99,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Report::class);
     }
+
+    /**
+     * このユーザーが付けたいいね
+     *
+     * @return HasMany<Like, $this>
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
 }

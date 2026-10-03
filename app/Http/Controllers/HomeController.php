@@ -33,6 +33,7 @@ class HomeController extends Controller
 
         $questions = Question::published()
             ->forList()
+            ->withCount('likes') // ⑦ いいね数（件数のみ表示）
             ->when($keyword !== '', fn ($query) => $query->search($keyword))
             ->when($categoryId, fn ($query) => $query->where('category_id', $categoryId))
             ->sorted($sort)
